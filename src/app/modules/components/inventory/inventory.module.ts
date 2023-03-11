@@ -1,3 +1,4 @@
+import { SharedModule } from './../../../shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -13,7 +14,8 @@ import { InventoryCreatingComponent } from './inventory-creating/inventory-creat
   ],
   imports: [
     CommonModule,
-    InventoryRoutingModule
+    InventoryRoutingModule,
+    SharedModule
   ]
 })
 export class InventoryModule { }

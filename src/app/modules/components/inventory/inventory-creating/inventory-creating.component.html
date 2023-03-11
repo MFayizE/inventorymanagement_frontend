@@ -1,1 +1,7 @@
 <p>inventory-creating works!</p>
+
+<form [formGroup]="loginForm" class="w-full">
+
+<input type="text" formControlName="name" (change)="checkNameExistOrNot()">
+
+</form>
