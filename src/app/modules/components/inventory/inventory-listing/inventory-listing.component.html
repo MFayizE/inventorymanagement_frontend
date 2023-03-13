@@ -1,64 +1,208 @@
-<div class="w-full flex justify-between  px-4 mx-auto mt-16">
-    <div class="flex ">
-        <h1 class="text-2xl font-semibold">Inventory</h1>
+<section class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" *ngIf="loader">
+    <section>
+        <div class="lds-roller">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+    </section>
+</section>
+
+<section *ngIf="!loader">
+
+    <div class="w-full flex justify-between  px-4 mx-auto mt-16">
+        <div class="flex ">
+            <h1 class="text-2xl font-semibold">Inventory</h1>
+        </div>
+        <div class="flex ">
+            <button class="bg-[#000103] px-5 py-2 rounded-md text-sm text-[#FFFEFE]"
+                [routerLink]="'/admin/inventory/create'">Create Product</button>
+        </div>
+
     </div>
-    <div class="flex ">
-        <button class="bg-[#000103] px-5 py-2 rounded-md text-sm text-[#FFFEFE]" [routerLink]="'/admin/inventory/create'">Create Product</button>
+
+    <div class="w-full flex justify-between  px-4 mx-auto mt-4">
+
+
+        <div class="pt-2 relative  text-gray-600">
+            <input  class="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
+              type="search" name="search" placeholder="Search" [(ngModel)]="search" (change)="searchProduct()">
+            <button type="submit" class="absolute right-0 top-0 mt-5 mr-4">
+              <svg class="text-gray-600 h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
+                viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
+                width="512px" height="512px">
+                <path
+                  d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+              </svg>
+            </button>
+          </div>
+
+
     </div>
 
-</div>
-
-<div class="w-full  px-4 mx-auto mt-8">
-    <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white ">
+    <div class="w-full  px-4 mx-auto mt-8">
+        <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white ">
 
 
-        <div class="block w-full overflow-x-auto">
-            <table class="items-center w-full border-collapse text-blueGray-700  ">
-                <thead class="thead-light ">
-                    <tr>
-                        <th
-                            class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                            Name
-                        </th>
-                        <th
-                            class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                            SKU
-                        </th>
-                        <th
-                            class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                            Category
-                        </th>
-                        <th
-                            class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                            Quantity
-                        </th>
-                        <th
-                            class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                            Sale Price
-                        </th>
-                        <th
-                            class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                            Purchase Price
-                        </th>
-                        <th
-                            class="px-6 bg-blueGray-50 text-blueGray-700 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left min-w-140-px">
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th
-                            class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                            Facebook
-                        </th>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
-                            1,480
-                        </td>
+            <div class=" w-full overflow-x-auto">
+                <table class="table-auto w-full">
+                    <thead class="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
+                        <tr>
+                            <th class="p-5 whitespace-nowrap">
+                                <div class="font-semibold text-left">Name</div>
+                            </th>
+                            <th class="p-5 whitespace-nowrap">
+                                <div class="font-semibold text-left">SKU</div>
+                            </th>
+                            <th class="p-5 whitespace-nowrap">
+                                <div class="font-semibold text-left">Category</div>
+                            </th>
+                            <th class="p-5 whitespace-nowrap">
 
-                    </tr>
+                                <div class="font-semibold text-left">Quantity</div>
 
-                </tbody>
-            </table>
+                            </th>
+                            <th class="p-5 whitespace-nowrap">
+
+                                <div class="font-semibold text-left">Sale Price</div>
+
+                            </th>
+                            <th class="p-5 whitespace-nowrap">
+
+                                <div class="font-semibold text-left">Purchase Price</div>
+
+                            </th>
+                            <th class="p-5 whitespace-nowrap">
+                                <div class="font-semibold text-left">Status</div>
+                            </th>
+                            <th class="p-5 whitespace-nowrap">
+
+                                <div class="font-semibold text-left">Bill</div>
+
+                            </th>
+                            <th
+                                class="px-6 bg-blueGray-50 text-blueGray-700 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left min-w-140-px">
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm divide-y divide-gray-100">
+                        <tr class="" *ngFor="let data of productList">
+                            <th class="p-5 whitespace-nowrap">
+
+                                <div class="font-semibold text-gray-800 text-left">{{data?.name}}</div>
+                            </th>
+                            <td class="p-5 whitespace-nowrap">
+
+                                <div class="text-left">{{data?.SKU}}</div>
+
+                            </td>
+                            <td class="p-5 whitespace-nowrap">
+                                <div class="text-left"> {{data?.categoryName}}</div>
+
+
+                            </td>
+                            <td class="p-5 whitespace-nowrap">
+                                <div class="text-left">{{data?.quantity}}</div>
+
+
+                            </td>
+                            <td class="p-5 whitespace-nowrap">
+                                <div class="text-left">{{data?.salePrice}} AED</div>
+
+
+                            </td>
+                            <td class="p-5 whitespace-nowrap">
+                                <div class="text-left">{{data?.purchasePrice}} AED</div>
+
+
+                            </td>
+                            <td class="p-5 whitespace-nowrap">
+
+                                <div class="text-left">
+                                    <span *ngIf="data?.enabled" class="bg-green-400 text-white p-2">Enabled</span>
+                                    <span *ngIf="!data?.enabled" class="bg-[#FA003F] text-white p-2 ">Disable</span>
+
+                                </div>
+
+
+                            </td>
+                            <td class="p-5 whitespace-nowrap">
+
+                                <div class="text-left">
+                                    <span *ngIf="data?.enableBill" class="bg-green-400 text-white p-2">Enabled</span>
+                                    <span *ngIf="!data?.enableBill" class="bg-[#FA003F] text-white p-2 ">Disable</span>
+
+                                </div>
+
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
+
+    <div class="flex justify-end">
+        <nav aria-label="Page navigation ">
+            <ul class="inline-flex  space-x-2 ">
+                <li><button (click)="prev()" [disabled]="page === 1"
+                        class="flex items-center justify-center w-10 h-10 text-indigo-600 transition-colors duration-150 rounded-full focus:shadow-outline hover:bg-indigo-100">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                            <path
+                                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                clip-rule="evenodd" fill-rule="evenodd"></path>
+                        </svg></button>
+                </li>
+                <!-- <li><button class="w-10 h-10 text-indigo-600 transition-colors duration-150 rounded-full focus:shadow-outline hover:bg-indigo-100">1</button></li> -->
+                <li><button
+                        class="w-10 h-10 text-[#FFFEFE] bg-[#000103] transition-colors duration-150 rounded-full focus:shadow-outline hover:bg-indigo-100"
+                        *ngIf="page > 1" (click)="onClickPage(1)">{{1}}</button></li>
+
+                <li><button
+                        class="w-10 h-10 text-indigo-600 transition-colors duration-150 rounded-full focus:shadow-outline hover:bg-indigo-100"
+                        *ngIf="page > 1 && page != 2" (click)="onClickPage(page - 1)">{{page - 1}}</button></li>
+                <li><button
+                        class="w-10 h-10 text-white transition-colors duration-150 bg-indigo-600 border border-r-0 border-indigo-600 rounded-full focus:shadow-outline">{{page}}</button>
+                </li>
+                <li><button
+                        class="w-10 h-10 text-indigo-600 transition-colors duration-150 rounded-full focus:shadow-outline hover:bg-indigo-100"
+                        *ngIf="page + 1 < maxPage" (click)="onClickPage(page + 1)">{{page + 1}}</button></li>
+                <li><button
+                        class="w-10 h-10 text-indigo-600 transition-colors duration-150 rounded-full focus:shadow-outline hover:bg-indigo-100"
+                        *ngIf="page + 2 < maxPage" (click)="onClickPage(page - 2)">{{page + 2}}</button></li>
+
+                <li><button
+                        class="w-10 h-10 text-[#FFFEFE] bg-[#000103] transition-colors duration-150 rounded-full focus:shadow-outline hover:bg-indigo-100"
+                        *ngIf="page != maxPage" (click)="onClickPage(maxPage)">{{maxPage}}</button></li>
+
+                <li><button (click)="next()" [disabled]="isLastPage"
+                        class="flex items-center justify-center w-10 h-10 text-indigo-600 transition-colors duration-150 bg-white rounded-full focus:shadow-outline hover:bg-indigo-100">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                            <path
+                                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                clip-rule="evenodd" fill-rule="evenodd"></path>
+                        </svg></button>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+
+    <!-- <li *ngFor="let num of numbers">
+        <button class="w-10 h-10 transition-colors duration-150 focus:shadow-outline" 
+          [ngClass]="{'text-indigo-600': selected !== num, 'text-white': selected === num, 'bg-indigo-600': selected === num, 'border': true, 'border-r-0': num !== 1, 'border-indigo-600': true, 'rounded-full': true, 'hover:bg-indigo-100': selected !== num}"
+          (click)="selectNumber(num)">
+          {{ num }}
+        </button>
+      </li> -->
+</section>

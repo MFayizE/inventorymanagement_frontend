@@ -4,8 +4,8 @@ import { CommonModule } from '@angular/common';
 
 import { SharedRoutingModule } from './shared-routing.module';
 import { HttpClientModule } from '@angular/common/http';
-
-
+import { NgxPaginationModule } from 'ngx-pagination';
+import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [],
   imports: [
@@ -13,11 +13,14 @@ import { HttpClientModule } from '@angular/common/http';
     SharedRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-
+    NgxPaginationModule,
+    FormsModule
   ],
   exports: [
     ReactiveFormsModule,
     HttpClientModule,
+    NgxPaginationModule,
+    FormsModule
 
   ]
 })

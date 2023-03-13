@@ -3,12 +3,13 @@ import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/c
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-    constructor(private router: Router) {}
+    constructor(private router: Router,private toastr: ToastrService) {}
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(catchError(err => {
@@ -18,6 +19,8 @@ export class ErrorInterceptor implements HttpInterceptor {
 
             }
             console.log(err);
+            this.toastr.error(err.error.message);
+
             console.log(err?.error?.errors?.message);
             if (err?.error?.errors?.message){
                 

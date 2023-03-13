@@ -1,7 +1,8 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthInterceptor } from './core/interceptors/auth-interceptor';
@@ -15,7 +16,13 @@ import { GlobalErrorHandler } from './core/interceptors/global-error-handler';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule 
+    HttpClientModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      closeButton: true,
+      progressBar: true,
+      // toastClass: 'toast no-shadow'
+    })
   ],
   providers: [
     {
