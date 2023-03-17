@@ -1,0 +1,28 @@
+<section class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" *ngIf="loader">
+    <section>
+        <div class="lds-roller">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+    </section>
+</section>
+
+<section *ngIf="!loader">
+    <div class="w-full flex justify-between  px-4 mx-auto mt-16">
+        <div class="flex ">
+            <h1 class="text-2xl font-semibold">Inventory</h1>
+        </div>
+        <div class="flex ">
+            <button class="bg-[#000103] px-5 py-2 rounded-md text-sm text-[#FFFEFE]"
+                [routerLink]="'/admin/expenses/bills/add'">Create Bill</button>
+        </div>
+
+    </div>
+</section>
