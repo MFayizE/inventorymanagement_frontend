@@ -21,6 +21,8 @@
     "@angular/platform-browser-dynamic": "^14.2.0",
     "@angular/router": "^14.2.0",
     "@auth0/angular-jwt": "^5.1.2",
+    "@ng-select/ng-select": "^10.0.3",
+    "ngx-bootstrap": "^10.2.0",
     "ngx-pagination": "^6.0.3",
     "ngx-toastr": "^16.1.0",
     "rxjs": "~7.5.0",

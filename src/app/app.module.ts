@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { AuthInterceptor } from './core/interceptors/auth-interceptor';
 import { ErrorInterceptor } from './core/interceptors/error-interceptor';
 import { GlobalErrorHandler } from './core/interceptors/global-error-handler';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,9 @@ import { GlobalErrorHandler } from './core/interceptors/global-error-handler';
       closeButton: true,
       progressBar: true,
       // toastClass: 'toast no-shadow'
-    })
+    }),
+    TypeaheadModule.forRoot(),
+
   ],
   providers: [
     {

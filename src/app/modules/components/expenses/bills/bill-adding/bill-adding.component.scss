@@ -7,3 +7,17 @@
   'opsz' 48
 }
 
+
+:host ::ng-deep .ng-select .ng-select-container {
+  color: #333;
+  background-color: #fff;
+  border-radius: 4px;
+  border: 2px solid #9CA3AF;
+  min-height: 36px;
+  align-items: center;
+  min-width: 300px;
+}
+
+:host ::ng-deep .ng-select.ng-select-single .ng-select-container {
+  height: 45px !important;
+}

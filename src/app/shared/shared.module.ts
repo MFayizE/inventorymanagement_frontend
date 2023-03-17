@@ -6,6 +6,11 @@ import { SharedRoutingModule } from './shared-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 @NgModule({
   declarations: [],
   imports: [
@@ -20,7 +25,12 @@ import { FormsModule } from '@angular/forms';
     ReactiveFormsModule,
     HttpClientModule,
     NgxPaginationModule,
-    FormsModule
+    FormsModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    NgSelectModule,
+    TypeaheadModule
 
   ]
 })

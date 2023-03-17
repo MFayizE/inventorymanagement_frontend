@@ -47,7 +47,7 @@
 
 
 
-            <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white ">
+            <div class="relative flex flex-col min-w-0 break-words w-full mb-6  rounded bg-white ">
 
 
                 <div class=" w-full overflow-x-auto">
@@ -92,30 +92,42 @@
                                         </span></div>
                                 </th>
                                 <td class="p-5  w-2/5">
-                                    
 
-                                    
+                                    <div >
+                                        <ng-select [items]="productList" bindLabel="name" bindValue="_id"
+                                            [formControl]="item.controls.product" [virtualScroll]="true">
+                                        </ng-select>
+                                    </div>
 
-                                    
+
 
                                 </td>
 
                                 <td class="p-5 whitespace-nowrap w-1/6">
-                                    <input class=" border-2 border-gray-400 rounded-md p-3 w-full"
+                                    <input class=" border-2 border-gray-400 rounded-md p-3 w-max"
                                         (change)="calculateTotal(i)" [formControl]="item.controls.quantity"
                                         type="number" />
                                 </td>
                                 <td class="p-5 whitespace-nowrap w-1/6">
                                     <div class="text-left"><input type="number"
-                                            class=" border-2 border-gray-400 rounded-md p-3 w-full"
+                                            class=" border-2 border-gray-400 rounded-md p-3 w-max"
                                             (change)="calculateTotal(i)" [formControl]="item.controls.price"></div>
 
 
                                 </td>
                                 <td class="p-5 whitespace-nowrap w-1/6">
-                                    <div class="text-left"><input type="number"
-                                            class=" border-2 border-gray-400 rounded-md p-3 w-full"
-                                            (change)="calculateTotal(i)" [formControl]="item.controls.tax"></div>
+
+
+                                    <div>
+                                        <select class="border-2 border-gray-400 rounded-md p-3 " (change)="calculateTotal(i)" [formControl]="item.controls.tax" aria-placeholder="Tax">
+                                            <option [value]="0">
+                                                0
+                                              </option>
+                                            <option [value]="5">
+                                                5%
+                                              </option>
+                                        </select>
+                                    </div>
 
 
                                 </td>
