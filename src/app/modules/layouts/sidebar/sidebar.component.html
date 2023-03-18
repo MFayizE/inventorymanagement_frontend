@@ -13,20 +13,34 @@
           <i class="material-symbols-outlined">menu</i>
         </span>
       </div>
+
       <div class="mt-4 flex flex-col gap-4 relative">
         <a *ngFor="let menu of menus; let i = index" routerLinkActive="bg-[#F3F5FC] text-[#000103]" 
-        [routerLinkActiveOptions]="{exact: true}" [routerLink]="menu.link" class="group flex items-center text-sm gap-3.5 font-medium p-2 hover:bg-[#F3F5FC] hover:text-[#000103] rounded-md" [class.mt-5]="menu.margin"
-        (click)="openSubmenu(i)">
+          [routerLinkActiveOptions]="{exact: true}" [routerLink]="menu.link" 
+          class="group flex items-center text-sm gap-3.5 font-medium p-2 hover:bg-[#F3F5FC] hover:text-[#000103] rounded-md" 
+          [ngClass]="{'mb-20': menu.hasSubmenu && submenuIndex === i && menu.name !== 'Reports', 'mb-1': menu.name === 'Reports' && menu.hasSubmenu && submenuIndex === i}"
+          (click)="openSubmenu(i)" style="position: relative;">
           <div>
             <i class="material-symbols-outlined" style="font-size: 20px;">{{menu.icon}}</i>
           </div>
           <h2 [ngStyle]="{
-              'transition-delay': (i + 3) * 100 + 'ms'
-            }" class="whitespace-pre duration-500 "   [class.overflow-hidden]="!open">{{menu.name}}</h2>
+            'transition-delay': (i + 3) * 100 + 'ms'
+          }" class="whitespace-pre duration-500 " [class.overflow-hidden]="!open">{{menu.name}}</h2>
           <h2 class="absolute left-48 bg-white font-semibold whitespace-pre text-gray-900 rounded-md drop-shadow-lg px-0 py-0 w-0 overflow-hidden group-hover:px-2 group-hover:py-1 group-hover:left-14 group-hover:duration-300 group-hover:w-fit" [class.hidden]="open">{{menu.name}}</h2>
-          <div *ngIf="menu.hasSubmenu && submenuIndex === i" class="absolute mt-2 py-1 bg-white rounded-md border-gray-100 border-2 z-10">
-            <a *ngFor="let submenu of menu.submenus" [routerLink]="submenu.link" class="block px-2 py-1 hover:bg-gray-100">{{submenu.name}}</a>
-          </div>
+          <div *ngIf="menu.hasSubmenu && submenuIndex === i" class="absolute bg-white rounded-md border-gray-100 ml-2 mt-2 z-10"
+          style="top: 100%; left: 0; width: 100%;">
+         <a *ngFor="let submenu of menu.submenus" [routerLink]="submenu.link" routerLinkActive="bg-[#F3F5FC] text-[#000103]"  class="group flex items-center text-xs gap-3.5 font-medium p-1 hover:bg-[#F3F5FC] hover:text-[#000103] rounded-md mb-1" >
+           <div>
+             <i class="material-symbols-outlined" style="font-size: 20px;">{{submenu.icon}}</i>
+           </div>
+           <h2 [ngStyle]="{
+             'transition-delay': (i + 3) * 100 + 'ms'
+           }" class="whitespace-pre duration-500" [class.overflow-hidden]="!open">{{submenu.name}}</h2>
+         </a>
+       </div>
         </a>
       </div>
+      
+      
+      
     </div>

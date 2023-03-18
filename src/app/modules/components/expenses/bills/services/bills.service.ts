@@ -15,6 +15,26 @@ export class BillsService {
     return  this.http.get(`${serverURL}/api/product/getAll`).pipe(catchError(this.handleError));
   }
 
+  
+  getAllBillCategory(){
+    
+    return  this.http.get(`${serverURL}/api/billCategory/all`).pipe(catchError(this.handleError));
+
+  }
+   
+  getAllVendors(){
+    
+    return  this.http.get(`${serverURL}/api/vendor/all`).pipe(catchError(this.handleError));
+
+  }
+
+
+  
+  createBillCategory(data){
+    return this.http.post(`${serverURL}/api/billCategory/add`,data)
+  }
+
+
   handleError(error: any) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {

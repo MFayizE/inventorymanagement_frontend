@@ -1,7 +1,8 @@
 import { BillsService } from './../services/bills.service';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, map, Observable, of } from 'rxjs';
+import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
+import { debounceTime, distinctUntilChanged, lastValueFrom, map, Observable, of } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-bill-adding',
@@ -15,13 +16,22 @@ export class BillAddingComponent implements OnInit {
   taxAmount : number
   totalAmount : number
   productList: any = []
-  constructor(private fb: FormBuilder, private web: BillsService) { }
+  billCategory: any = []
+  vendorsList: any =[]
+  addCategory: boolean = false
+  createCategory: FormGroup;
+  constructor(private fb: FormBuilder, private web: BillsService,private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.createBillForm = this.fb.group({
       items: this.fb.array([])
     });
+    this.createCategory = this.fb.group({
+      categoryName: ['', Validators.required],
+    })
     this.getAllProduct()
+   
+    
     
   }
   
@@ -29,13 +39,13 @@ export class BillAddingComponent implements OnInit {
     return this.createBillForm.get('items') as FormArray;
   }
 
-  search = (text$: Observable<string>) =>
-  text$.pipe(
-    debounceTime(200),
-    distinctUntilChanged(),
-    map(term => term.length < 3 ? []
-      : this.productList.filter(product => product.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 5))
-  );
+  // search = (text$: Observable<string>) =>
+  // text$.pipe(
+  //   debounceTime(200),
+  //   distinctUntilChanged(),
+  //   map(term => term.length < 3 ? []
+  //     : this.productList.filter(product => product.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 5))
+  // );
   addItem(): void {
     this.items.push(this.fb.group({
       product: [''],
@@ -45,6 +55,46 @@ export class BillAddingComponent implements OnInit {
       total: [0],
       taxAmount: [0]
     }));
+  }
+
+  getAllBillCategory() {
+    this.loader = true
+    this.web.getAllBillCategory().subscribe({
+      next: (res) => {
+        this.billCategory = res;
+        console.log(this.billCategory);
+        this.getAllVendors()
+        // this.loader = false;
+        
+      },
+      error: (err) => {
+        console.log(err);
+        this.loader = false;
+      },
+      complete: () => {
+        console.log('Observable completed');
+      }
+    });
+  }
+
+  
+  getAllVendors() {
+    this.loader = true
+    this.web.getAllVendors().subscribe({
+      next: (res) => {
+        this.vendorsList = res;
+        console.log(this.vendorsList);
+        
+        this.loader = false;
+      },
+      error: (err) => {
+        console.log(err);
+        this.loader = false;
+      },
+      complete: () => {
+        console.log('Observable completed');
+      }
+    });
   }
 
   calculateTotal(index: number): void {
@@ -61,6 +111,28 @@ export class BillAddingComponent implements OnInit {
     item.controls.taxAmount.setValue(Number(taxAmount.toFixed(2)))
     item.controls.tax.setValue(+item.controls.tax.value);    
 
+  }
+
+  async createBillCategory(){
+    let payload = {
+      "name" : this.createCategory.value.categoryName
+    }
+    try {
+      const result$ = await this.web.createBillCategory(payload)
+      const res = await lastValueFrom(result$);
+      if (res) {
+        console.log(res);
+        this.addCategory = false
+        this.getAllBillCategory()
+        this.createCategory.reset();
+        this.toastr.success("Product Category successfully created!");
+
+      }
+    } catch (error) {
+      console.log(error);
+      this.toastr.error(error.error.message);
+
+    }
   }
 
   // calculateTotalAmount(index: number) {
@@ -94,7 +166,8 @@ export class BillAddingComponent implements OnInit {
         this.productList = res;
         console.log('this.productList: ', this.productList);
 
-        this.loader = false;
+        // this.loader = false;
+        this.getAllBillCategory()
       },
       error: (err) => {
         console.log(err);
