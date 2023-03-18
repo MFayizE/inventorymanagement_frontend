@@ -24,11 +24,14 @@ export class BillAddingComponent implements OnInit {
 
   ngOnInit(): void {
     this.createBillForm = this.fb.group({
-      items: this.fb.array([])
+      items: this.fb.array([]),
+      categoryId: ['', Validators.required],
+      vendorId: ['', Validators.required],
     });
     this.createCategory = this.fb.group({
       categoryName: ['', Validators.required],
     })
+    this.addItem()
     this.getAllProduct()
    
     

@@ -11,6 +11,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+
 @NgModule({
   declarations: [],
   imports: [
@@ -30,7 +32,8 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
     MatFormFieldModule,
     MatSelectModule,
     NgSelectModule,
-    TypeaheadModule
+    TypeaheadModule,
+    MatDatepickerModule
 
   ]
 })
