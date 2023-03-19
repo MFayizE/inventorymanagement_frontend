@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 
 import { BillsRoutingModule } from './bills-routing.module';
 import { BillListingComponent } from './bill-listing/bill-listing.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { BillListingComponent } from './bill-listing/bill-listing.component';
   imports: [
     CommonModule,
     BillsRoutingModule,
-    SharedModule
+    SharedModule,
+    MatDatepickerModule
   ]
 })
 export class BillsModule { }
