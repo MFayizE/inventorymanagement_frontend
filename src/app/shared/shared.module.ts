@@ -6,12 +6,11 @@ import { SharedRoutingModule } from './shared-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule } from '@angular/forms';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [],
@@ -28,11 +27,10 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     HttpClientModule,
     NgxPaginationModule,
     FormsModule,
-    MatInputModule,
     MatFormFieldModule,
-    MatSelectModule,
     NgSelectModule,
     TypeaheadModule,
+    MatSelectModule
     // MatDatepickerModule
 
   ]
