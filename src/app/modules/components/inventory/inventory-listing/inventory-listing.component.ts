@@ -11,11 +11,12 @@ export class InventoryListingComponent implements OnInit {
 
   loader:boolean = false
   page: number = 1
-  limit: number = 25
+  limit: number = 5
   isLastPage: boolean = false
   maxPage: number
   productList: any =[]
   search = ''
+  totalProduct: number
   constructor(private web: InventoryService) { }
 
   ngOnInit(): void {
@@ -44,6 +45,7 @@ export class InventoryListingComponent implements OnInit {
         this.productList = res["products"];
         this.isLastPage = res["isLastPage"]
         this.maxPage = res["maxPage"]
+        this.totalProduct = res['count']
         console.log(this.productList);
         console.log(this.maxPage);
 

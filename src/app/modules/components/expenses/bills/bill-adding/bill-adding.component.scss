@@ -18,6 +18,26 @@
   min-width: 300px;
 }
 
+mat-form-field {
+  width: 100% !important;
+  // background: white;
+
+}
+:host ::ng-deep .mat-mdc-form-field-has-icon-suffix .mat-mdc-text-field-wrapper {
+  padding-right: 0;
+  background: white;
+  border-radius: 6px;
+  border: 2px solid #E5E7EB;
+}
+
+.scrollable {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+
+
+
 :host ::ng-deep .ng-select.ng-select-single .ng-select-container {
   height: 45px !important;
 }

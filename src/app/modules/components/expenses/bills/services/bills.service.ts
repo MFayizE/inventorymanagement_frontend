@@ -34,6 +34,16 @@ export class BillsService {
     return this.http.post(`${serverURL}/api/billCategory/add`,data)
   }
 
+  createBill(data){
+    return this.http.post(`${serverURL}/api/bill`,data)
+
+  }
+  getBillUsingId(Id){
+    return this.http.get(`${serverURL}/api/bill/${Id}`).pipe(catchError(this.handleError));
+
+  }
+
+
 
   handleError(error: any) {
     let errorMessage = '';

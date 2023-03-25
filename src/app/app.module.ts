@@ -6,9 +6,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthInterceptor } from './core/interceptors/auth-interceptor';
-import { ErrorInterceptor } from './core/interceptors/error-interceptor';
-import { GlobalErrorHandler } from './core/interceptors/global-error-handler';
-import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+// import { ErrorInterceptor } from './core/interceptors/error-interceptor';
+import { GlobalErrorHandler1 } from './core/interceptors/global-error-handler';
+import { GlobalErrorHandler } from './core/interceptors/global-error-handler-component';
+// import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+// import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -24,24 +26,23 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
       progressBar: true,
       // toastClass: 'toast no-shadow'
     }),
-    TypeaheadModule.forRoot(),
+
+    // TypeaheadModule.forRoot(),
+    // MatSlideToggleModule
 
   ],
   providers: [
     {
-        provide: HTTP_INTERCEPTORS,
-        useClass: AuthInterceptor,
-        multi: true
-    },
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: ErrorInterceptor,
-            multi: true
-        },
-        {
-            provide: ErrorHandler,
-            useClass: GlobalErrorHandler,
-        }],
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }, { provide: ErrorHandler, useClass: GlobalErrorHandler },
+
+
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler1,
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

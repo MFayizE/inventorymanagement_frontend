@@ -6,20 +6,19 @@ import { CommonModule } from '@angular/common';
 import { BillsRoutingModule } from './bills-routing.module';
 import { BillListingComponent } from './bill-listing/bill-listing.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import {MatSelectModule} from '@angular/material/select';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { BillViewComponent } from './bill-view/bill-view.component';
+
 @NgModule({
   declarations: [
     BillListingComponent,
-    BillAddingComponent
+    BillAddingComponent,
+    BillViewComponent
   ],
   imports: [
     CommonModule,
     BillsRoutingModule,
     SharedModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatSelectModule
+
   ]
 })
 export class BillsModule { }

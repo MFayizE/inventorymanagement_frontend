@@ -33,11 +33,8 @@ export class InventoryService {
       page,
       limit
     };
-    const options = {
-      params
-    };
     if(search){
-      return this.http.post(`${serverURL}/api/product/search?`,null,options).pipe(catchError(this.handleError));
+      return this.http.get(`${serverURL}/api/product/search?`,{params:params}).pipe(catchError(this.handleError));
 
     }
     else{
