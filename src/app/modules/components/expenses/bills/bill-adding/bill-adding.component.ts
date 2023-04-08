@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, lastValueFrom, map, Observable, of } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { AddVendorComponent } from '../../vendors/add-vendor/add-vendor.component';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -36,6 +37,8 @@ export class BillAddingComponent implements OnInit {
   addCategory: boolean = false
   createCategory: FormGroup;
   clicked: boolean = false
+  addVendor: boolean = false
+
   constructor(private fb: FormBuilder, private web: BillsService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
@@ -55,7 +58,6 @@ export class BillAddingComponent implements OnInit {
     })
     // this.addItem()
     this.getAllProduct()
-
 
 
   }
@@ -260,4 +262,5 @@ export class BillAddingComponent implements OnInit {
 
 
   }
+
 }

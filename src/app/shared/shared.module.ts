@@ -14,6 +14,8 @@ import {MatInputModule} from '@angular/material/input'
 import {MatButtonModule} from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MomentDateModule } from '@angular/material-moment-adapter';
+import {MatIconModule} from '@angular/material/icon';
+import {MatDialogModule} from '@angular/material/dialog';
 @NgModule({
   declarations: [],
   imports: [
@@ -22,7 +24,9 @@ import { MomentDateModule } from '@angular/material-moment-adapter';
     ReactiveFormsModule,
     HttpClientModule,
     NgxPaginationModule,
-    FormsModule
+    FormsModule,
+    MatIconModule,
+    MatDialogModule
   ],
   exports: [
     ReactiveFormsModule,
@@ -36,7 +40,9 @@ import { MomentDateModule } from '@angular/material-moment-adapter';
     MatInputModule,
     MatButtonModule,
     MatNativeDateModule,
-    MomentDateModule 
+    MomentDateModule ,
+    MatIconModule,
+    MatDialogModule
   ]
 })
 export class SharedModule { }

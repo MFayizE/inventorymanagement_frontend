@@ -11,6 +11,8 @@ import { GlobalErrorHandler1 } from './core/interceptors/global-error-handler';
 import { GlobalErrorHandler } from './core/interceptors/global-error-handler-component';
 // import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 // import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { GlobalErrorHandler } from './core/interceptors/global-error-handler-com
       progressBar: true,
       // toastClass: 'toast no-shadow'
     }),
+    MatToolbarModule,
+    MatDialogModule
 
     // TypeaheadModule.forRoot(),
     // MatSlideToggleModule

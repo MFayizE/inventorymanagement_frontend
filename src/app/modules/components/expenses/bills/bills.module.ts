@@ -7,6 +7,7 @@ import { BillsRoutingModule } from './bills-routing.module';
 import { BillListingComponent } from './bill-listing/bill-listing.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { BillViewComponent } from './bill-view/bill-view.component';
+import { VendorsModule } from '../vendors/vendors.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { BillViewComponent } from './bill-view/bill-view.component';
     CommonModule,
     BillsRoutingModule,
     SharedModule,
+    VendorsModule
 
   ]
 })

@@ -38,6 +38,10 @@ export class BillsService {
     return this.http.post(`${serverURL}/api/bill`,data)
 
   }
+  createVendor(data){
+    return this.http.post(`${serverURL}/api/vendor/add`,data)
+
+  }
   getBillUsingId(Id){
     return this.http.get(`${serverURL}/api/bill/${Id}`).pipe(catchError(this.handleError));
 

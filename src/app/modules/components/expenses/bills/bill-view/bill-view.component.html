@@ -1,1 +1,167 @@
-<p>bill-view works!</p>
+<section>
+    <div class="w-full  px-4 mx-auto mt-16">
+    </div>
+
+    <section class="invoiceSection">
+        <div class="flex justify-between mb-3">
+            <h2 class="text-3xl font-bold mb-6 pb-2 tracking-wider uppercase">Invoice</h2>
+            <button (click)="openPDF()" class="bg-[#000103] px-8 py-3 rounded-md text-sm text-[#FFFEFE]">Export to
+                PDF</button>
+        </div>
+
+
+        <div id="printTemplate">
+            <div class="bg-white">
+                <div>
+                    <img src="assets/invoiceHead.jpg" alt="">
+                </div>
+                <div class="p-16">
+                    <div class="flex justify-between mb-10">
+                        <div class="w-1/2">
+                            <label class="text-gray-800 block mb-2 text-xs uppercase tracking-wide">Bill From</label>
+                            <div>
+                                <div x-text="billing.name" class="font-bold" *ngIf="billData?.vendor?.name">
+                                    {{billData?.vendor?.name}}</div>
+                                <div x-text="billing.address" *ngIf="billData?.vendor?.address">
+                                    {{billData?.vendor?.address}}</div>
+                                <div x-text="billing.extra" *ngIf="billData?.vendor?.phone">{{billData?.vendor?.phone}}
+                                </div>
+                                <div x-text="billing.extra" class="mt-2" *ngIf="billData?.vendor?.taxNumber">Tax Number
+                                    : {{billData?.vendor?.taxNumber}}</div>
+                            </div>
+                        </div>
+                        <div class="w-1/2">
+                            <div class="mb-1 flex items-center">
+                                <label
+                                    class="w-32 text-gray-800 block font-bold text-xs uppercase tracking-wide">Invoice
+                                    No.</label>
+                                <span class="mr-4 inline-block">:</span>
+                                <div x-text="invoiceNumber">{{billData?.billNumber}}</div>
+                            </div>
+
+                            <div class="mb-1 flex items-center">
+                                <label
+                                    class="w-32 text-gray-800 block font-bold text-xs uppercase tracking-wide">Invoice
+                                    Date</label>
+                                <span class="mr-4 inline-block">:</span>
+                                <div x-text="invoiceDate">{{ billData?.billDate | date:'dd MMMM yyyy' }}</div>
+                            </div>
+
+                            <div class="mb-1 flex items-center">
+                                <label class="w-32 text-gray-800 block font-bold text-xs uppercase tracking-wide">Due
+                                    date</label>
+                                <span class="mr-4 inline-block">:</span>
+                                <div x-text="invoiceDueDate">{{ billData?.dueDate | date:'dd MMMM yyyy' }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap -mx-1 border-b py-2 items-start">
+                        <div class="flex-1 px-1">
+                            <p class="text-gray-600 uppercase tracking-wide text-xs font-bold">Items</p>
+                        </div>
+
+                        <div class="px-1 w-32 text-right">
+                            <p class="text-gray-600 uppercase tracking-wide text-xs font-bold">Quantity</p>
+                        </div>
+
+                        <div class="px-1 w-32 text-right">
+                            <p class="leading-none">
+                                <span class="block uppercase tracking-wide text-xs font-bold text-gray-600">Price</span>
+                            </p>
+                        </div>
+
+                        <div class="px-1 w-32 text-right">
+                            <p class="leading-none">
+                                <span class="block uppercase tracking-wide text-xs font-bold text-gray-600">Tax</span>
+                            </p>
+                        </div>
+
+                        <div class="px-1 w-32 text-right">
+                            <p class="leading-none">
+                                <span class="block uppercase tracking-wide text-xs font-bold text-gray-600">Total</span>
+                            </p>
+                        </div>
+                    </div>
+                    <section class="items" *ngFor="let items of billData?.items">
+                        <div class="flex flex-wrap -mx-1 py-2 border-b">
+                            <div class="flex-1 px-1">
+                                <p class="text-gray-800" x-text="invoice.name">{{items?.product?.name}}</p>
+                            </div>
+    
+                            <div class="px-1 w-32 text-right">
+                                <p class="text-gray-800" x-text="invoice.qty">{{items?.quantity}}</p>
+                            </div>
+    
+                            <div class="px-1 w-32 text-right">
+                                <p class="text-gray-800" x-text="numberFormat(invoice.rate)">{{items?.price}} AED</p>
+                            </div>
+                            <div class="px-1 w-32 text-right">
+                                <p class="text-gray-800" x-text="numberFormat(invoice.tax)">{{items?.taxPercentage}}%</p>
+                            </div>
+    
+                            <div class="px-1 w-32 text-right">
+                                <p class="text-gray-800" x-text="numberFormat(invoice.total)">{{items?.total}} AED</p>
+                            </div>
+                        </div>
+                    </section>
+                  
+
+                    <div class="py-2 ml-auto mt-20" style="width: 320px">
+                        <div class="flex justify-between mb-3">
+                            <div class="text-gray-800 text-right flex-1">Subtotal</div>
+                            <div class="text-right w-40">
+                                <div class="text-gray-800 font-medium" x-html="netTotal">{{billData?.totalAmount -billData?.totalTaxAmount}} AED</div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between mb-3">
+                            <div class="text-gray-800 text-right flex-1">Tax Amount</div>
+                            <div class="text-right w-40">
+                                <div class="text-gray-800 font-medium" x-html="netTotal">{{billData?.totalTaxAmount}} AED</div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between mb-3">
+                            <div class="text-gray-800 text-right flex-1">Total incl. Tax</div>
+                            <div class="text-right w-40">
+                                <div class="text-gray-800 font-medium" x-html="netTotal">{{billData?.totalAmount}} AED</div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between mb-3">
+                            <div class="text-gray-800 text-right flex-1">Paid</div>
+                            <div class="text-right w-40">
+                                <div class="text-gray-800 font-medium" x-html="netTotal">{{billData?.paidAmount}} AED</div>
+                            </div>
+                        </div>
+                       
+
+                        <div class="py-2 border-t border-b">
+                            <div class="flex justify-between">
+                                <div class="text-xl text-gray-600 text-right flex-1">Amount due</div>
+                                <div class="text-right w-40">
+                                    <div class="text-xl text-gray-800 font-bold" x-html="netTotal">{{billData?.remainingAmount}} AED</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </section>
+</section>
