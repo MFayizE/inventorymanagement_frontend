@@ -271,7 +271,7 @@ export class BillAddingComponent implements OnInit {
     console.log('control: ', control);
     const item = control.at(i);
     item.patchValue({
-      price: data?.salePrice
+      price: data?.purchasePrice
     });
   }
 
