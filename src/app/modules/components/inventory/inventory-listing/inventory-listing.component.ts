@@ -11,7 +11,7 @@ export class InventoryListingComponent implements OnInit {
 
   loader:boolean = false
   page: number = 1
-  limit: number = 5
+  limit: number = 25
   isLastPage: boolean = false
   maxPage: number
   productList: any =[]
@@ -27,15 +27,19 @@ export class InventoryListingComponent implements OnInit {
     this.page = data
     this.getAllProduct()
   }
-  next(){
-    this.page = this.page+1
-    this.getAllProduct()
+
+  pagination(data){
+    if(data == 'prev'){
+      this.page  = this.page - 1
+      this.getAllProduct()
+    }
+    if(data == 'next'){
+      this.page  = this.page + 1
+      this.getAllProduct()
+
+    }
+
   }
-  prev(){
-    this.page = this.page-1
-    this.getAllProduct()
-  }
-  
 
 
   getAllProduct() {
@@ -60,6 +64,8 @@ export class InventoryListingComponent implements OnInit {
       }
     });
   }
+
+  
 
   async searchProduct() {
     this.page = 1

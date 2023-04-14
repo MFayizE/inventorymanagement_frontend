@@ -59,7 +59,8 @@
                                 {{item.name}}
                             </option>
                         </select>
-                        <span class="material-symbols-rounded h-6 w-6 cursor-pointer text-[#000103]" (click)="addVendor = true">
+                        <span class="material-symbols-rounded h-6 w-6 cursor-pointer text-[#000103]"
+                            (click)="addVendor = true">
                             add_circle
                         </span>
 
@@ -118,7 +119,7 @@
 
             <div class="relative min-w-0 mb-6 bg-white">
                 <div class="overflow-x-auto grid grid-cols-1">
-                  <table class="table-auto">
+                    <table class="table-auto">
                         <thead class="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
                             <tr>
                                 <th class="p-5 whitespace-nowrap">
@@ -162,7 +163,8 @@
 
                                     <div>
                                         <ng-select [items]="productList" bindLabel="name" bindValue="_id"
-                                            [formControl]="item.controls.product" [virtualScroll]="true">
+                                            (change)="onChangeProduct($event,i)" [formControl]="item.controls.product"
+                                            [virtualScroll]="true">
                                         </ng-select>
                                     </div>
 
@@ -310,8 +312,7 @@
     <form [formGroup]="createCategory" class="w-full">
         <div class="main-modal fixed w-full h-100 inset-0 z-50 overflow-y-auto flex justify-center items-center animated fadeIn faster"
             style="background: rgba(0,0,0,.7);">
-            <div
-                class="border border-teal-500 modal-container bg-white w-9/12 mx-auto rounded shadow-lg z-50 ">
+            <div class="border border-teal-500 modal-container bg-white w-9/12 mx-auto rounded shadow-lg z-50 ">
                 <div class="modal-content py-4 text-left px-6">
                     <!--Title-->
                     <div class="flex justify-end items-center pb-3">
@@ -331,6 +332,3 @@
         </div>
     </form>
 </section>
-
-
-

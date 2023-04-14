@@ -151,15 +151,15 @@
                     <div
                         class="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
                         <span class="text-xs xs:text-sm text-gray-900">
-                            Showing 1 to {{totalProduct < limit ? totalProduct : limit }} of {{totalProduct}} Entries
+                            Showing {{page}} to {{maxPage}} of {{totalProduct}} Entries
                                 </span>
                                 <div class="inline-flex mt-2 xs:mt-0">
-                                    <button
-                                        class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l">
+                                    <button [disabled]="page <= 1" (click)="pagination('prev')"
+                                        class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l disabled:opacity-30">
                                         Prev
                                     </button>
-                                    <button (click)="next()" [disabled]="isLastPage"
-                                        class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r">
+                                    <button (click)="pagination('next')" [disabled]="isLastPage"
+                                        class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r disabled:opacity-30">
                                         Next
                                     </button>
                                 </div>

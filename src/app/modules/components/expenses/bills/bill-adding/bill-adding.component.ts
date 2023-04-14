@@ -5,6 +5,7 @@ import { debounceTime, distinctUntilChanged, lastValueFrom, map, Observable, of 
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { AddVendorComponent } from '../../vendors/add-vendor/add-vendor.component';
+import { Router } from '@angular/router';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -39,7 +40,7 @@ export class BillAddingComponent implements OnInit {
   clicked: boolean = false
   addVendor: boolean = false
 
-  constructor(private fb: FormBuilder, private web: BillsService, private toastr: ToastrService) { }
+  constructor(private fb: FormBuilder, private web: BillsService, private toastr: ToastrService, private router:Router) { }
 
   ngOnInit(): void {
     this.createBillForm = this.fb.group({
@@ -249,6 +250,7 @@ export class BillAddingComponent implements OnInit {
       if (res) {
         console.log(res);
         this.createBillForm.reset();
+        this.router.navigate(['/admin/expenses/bills/view/' + res['bill']?._id]);
         this.toastr.success("Bill successfully saved!");
 
       }
@@ -261,6 +263,16 @@ export class BillAddingComponent implements OnInit {
 
 
 
+  }
+
+  onChangeProduct(data,i){
+    console.log('data: ', data);
+    const control = <FormArray>this.createBillForm.get('items');
+    console.log('control: ', control);
+    const item = control.at(i);
+    item.patchValue({
+      price: data?.salePrice
+    });
   }
 
 }

@@ -46,7 +46,32 @@ export class BillsService {
     return this.http.get(`${serverURL}/api/bill/${Id}`).pipe(catchError(this.handleError));
 
   }
+  getAllAccounts(){
+    return this.http.get(`${serverURL}/api/account/all`).pipe(catchError(this.handleError));
+  }
 
+  addBillDueDate(data,Id){
+    return this.http.put(`${serverURL}/api/bill/${Id}`,data)
+
+  }
+
+  
+  markBillRecieved(Id){
+    return this.http.put(`${serverURL}/api/bill/${Id}/received`, null)
+
+  }
+
+  addPayment(Id,data){
+    return this.http.put(`${serverURL}/api/bill/${Id}/payment`, data)
+
+  }
+
+  
+  getAllBillList(page,limit){
+    
+    return  this.http.get(`${serverURL}/api/bill?page=${page}&limit=${limit}`).pipe(catchError(this.handleError));
+
+  }
 
 
   handleError(error: any) {

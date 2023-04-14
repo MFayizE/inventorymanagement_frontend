@@ -16,8 +16,11 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDialogModule} from '@angular/material/dialog';
+import { DialogConfirmComponent } from './components/dialog-confirm/dialog-confirm.component';
 @NgModule({
-  declarations: [],
+  declarations: [
+    DialogConfirmComponent
+  ],
   imports: [
     CommonModule,
     SharedRoutingModule,

@@ -14,14 +14,125 @@
     </section>
 </section>
 
-<section *ngIf="!loader">
-    <div class="w-full flex justify-between  px-4 mx-auto mt-16">
+<section *ngIf="!loader" class="container mx-auto px-4 sm:px-8 mt-16">
+    <div class="w-full flex justify-between">
         <div class="flex ">
             <h1 class="text-2xl font-semibold">Inventory</h1>
         </div>
         <div class="flex ">
             <button class="bg-[#000103] px-5 py-2 rounded-md text-sm text-[#FFFEFE]"
                 [routerLink]="'/admin/expenses/bills/add'">Create Bill</button>
+        </div>
+    </div>
+
+
+    
+    <div class="py-8">
+        <div class="grid grid-cols-1 ">
+            <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+                <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
+                    <table class="min-w-full leading-normal overflow-x-auto">
+                        <thead>
+                            <tr>
+                                <th
+                                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Number
+                                </th>
+                                <th
+                                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Vendor
+                                </th>
+                                <th
+                                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Amount 
+                                </th>
+                                <th
+                                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Bill Date
+                                </th>
+                                <th
+                                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Due Date
+                                </th>
+                                <th
+                                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Status
+                                </th>
+                                <th
+                                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of billList">
+                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm font-bold cursor-pointer"
+                                [routerLink]="'/admin/expenses/bills/view/'+data?._id">
+                                    <p class="text-gray-900 whitespace-no-wrap">{{data?.billNumber}}</p>
+                                </td>
+                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                    <p class="text-gray-900 whitespace-no-wrap">{{data?.vendor?.name}}</p>
+                                </td>
+                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                    <p class="text-gray-900 whitespace-no-wrap">{{data?.totalAmount}} AED</p>
+                                </td>
+                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm" >
+                                    <p class="text-gray-900 whitespace-no-wrap">{{data?.billDate | date:'dd MMMM yyyy'}}</p>
+                                </td>
+                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                    <p class="text-gray-900 whitespace-no-wrap">{{data?.dueDate  | date:'dd MMMM yyyy'}}</p>
+                                </td>
+                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                    <span *ngIf="data?.status == 'Draft'"
+                                        class="relative inline-block px-3 py-1 font-semibold text-yellow-500 leading-tight">
+                                        <span aria-hidden
+                                            class="absolute inset-0 bg-yellow-200 opacity-50 rounded-full"></span>
+                                        <span class="relative">Draft</span>
+                                    </span>
+                                    <span *ngIf="data?.status == 'Received'"
+                                        class="relative inline-block px-3 py-1 font-semibold text-blue-400 leading-tight">
+                                        <span aria-hidden
+                                            class="absolute inset-0 bg-blue-200 opacity-50 rounded-full"></span>
+                                        <span class="relative">Received</span>
+                                    </span>
+                                    <span *ngIf="data?.status == 'Partial'"
+                                        class="relative inline-block px-3 py-1 font-semibold text-green-400 leading-tight">
+                                        <span aria-hidden
+                                            class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                                        <span class="relative">Partial</span>
+                                    </span>
+                                    <span *ngIf="data?.status == 'Paid'"
+                                        class="relative inline-block px-3 py-1 font-semibold text-green-800 leading-tight">
+                                        <span aria-hidden
+                                            class="absolute inset-0 bg-green-400 opacity-50 rounded-full"></span>
+                                        <span class="relative">Paid</span>
+                                    </span>
+                                </td>
+                                
+                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div
+                        class="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
+                        <span class="text-xs xs:text-sm text-gray-900">
+                            Showing {{page}} to {{maxPage}} of {{totalBill}} Entries
+                                </span>
+                                <div class="inline-flex mt-2 xs:mt-0">
+                                    <button [disabled]="page <= 1" (click)="pagination('prev')"
+                                        class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l disabled:opacity-30">
+                                        Prev
+                                    </button>
+                                    <button (click)="pagination('next')" [disabled]="isLastPage"
+                                        class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r disabled:opacity-30">
+                                        Next
+                                    </button>
+                                </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
     </div>
