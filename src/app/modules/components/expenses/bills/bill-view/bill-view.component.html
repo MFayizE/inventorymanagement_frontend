@@ -1,0 +1,433 @@
+<section>
+    <div class="w-full  px-4 mx-auto mt-16">
+        <section class="mb-5">
+            <section *ngIf="billData?.status != 'Paid'">
+                <section class=" grid grid-cols-1 md:grid-cols-3 ">
+                    <div class="relative shadow-md rounded-3xl p-2 mx-1 my-3 ">
+                        <div class="overflow-x-hidden rounded-2xl relative">
+                            <img class="h-40 rounded-2xl w-full object-cover" src="assets/recieved.jpg">
+                        </div>
+                        <div class="mt-4 pl-2 mb-2 flex justify-end mr-2 ">
+                            <button
+                                class="bg-[black] px-8 py-3 rounded-md text-sm text-[#009cff] disabled:opacity-25 hover:bg-[#a7ddff]"
+                                [disabled]="billData?.status != 'Draft'" (click)="markBillRecieved()">MARK
+                                RECIEVED</button>
+                        </div>
+                    </div>
+                    <div class="relative shadow-md rounded-3xl p-2 mx-1 my-3 ">
+                        <div class="overflow-x-hidden rounded-2xl relative">
+                            <img class="h-40 rounded-2xl w-full object-cover" src="assets/draft.jpg">
+                        </div>
+                        <div class="mt-4 pl-2 mb-2 flex justify-end mr-2 ">
+                            <button
+                                class="bg-[black] px-8 py-3 rounded-md text-sm text-[#ffc600] disabled:opacity-25 hover:bg-[#f5f7bb]"
+                                [disabled]="billData?.status != 'Received' || billData?.dueDate"
+                                (click)="addDueDate = true">ADD DUE DATE</button>
+                        </div>
+                    </div>
+
+                    <div class="relative shadow-md rounded-3xl p-2 mx-1 my-3 ">
+                        <div class="overflow-x-hidden rounded-2xl relative">
+                            <img class="h-40 rounded-2xl w-full object-cover" src="assets/partialPayment.jpg">
+                        </div>
+                        <div class="mt-4 pl-2 mb-2 flex justify-end mr-2 ">
+                            <button
+                                class="bg-[black] px-8 py-3 rounded-md text-sm text-[#71e76b] disabled:opacity-25 hover:bg-[#cdfccb]"
+                                [disabled]="!billData?.dueDate || billData?.status == 'Paid' " (click)="addPayment = true">ADD PAYMENT</button>
+                        </div>
+                    </div>
+
+
+                </section>
+            </section>
+
+            <section class=" grid grid-cols-1" *ngIf="billData?.status == 'Paid'">
+                <div class="relative shadow-md rounded-3xl p-2 mx-1 my-3 ">
+                    <div class="overflow-x-hidden rounded-2xl relative">
+                        <img class="h-40 rounded-2xl w-full object-cover" src="assets/fullPaid.jpg">
+                    </div>
+                </div>
+            </section>
+
+        </section>
+
+
+
+
+        <section class="invoiceSection">
+            <div class="flex justify-between mb-3">
+                <h2 class="text-3xl font-bold mb-6 pb-2 tracking-wider uppercase">Invoice</h2>
+                <button (click)="openPDF()" class="bg-[#000103] px-8 py-3 rounded-md text-sm text-[#FFFEFE]">Export to
+                    PDF</button>
+            </div>
+
+
+            <div id="printTemplate">
+                <div class="bg-white">
+                    <div>
+                        <img src="assets/invoiceHead.jpg" alt="">
+                    </div>
+                    <div class="p-16">
+                        <div class="flex justify-between mb-10">
+                            <div class="w-1/2">
+                                <label class="text-gray-800 block mb-2 text-xs uppercase tracking-wide">Bill
+                                    From</label>
+                                <div>
+                                    <div x-text="billing.name" class="font-bold" *ngIf="billData?.vendor?.name">
+                                        {{billData?.vendor?.name}}</div>
+                                    <div x-text="billing.address" *ngIf="billData?.vendor?.address">
+                                        {{billData?.vendor?.address}}</div>
+                                    <div x-text="billing.extra" *ngIf="billData?.vendor?.phone">
+                                        {{billData?.vendor?.phone}}
+                                    </div>
+                                    <div x-text="billing.extra" class="mt-2" *ngIf="billData?.vendor?.taxNumber">Tax
+                                        Number
+                                        : {{billData?.vendor?.taxNumber}}</div>
+                                </div>
+                            </div>
+                            <div class="w-1/2">
+                                <div class="mb-1 flex items-center">
+                                    <label
+                                        class="w-32 text-gray-800 block font-bold text-xs uppercase tracking-wide">Invoice
+                                        No.</label>
+                                    <span class="mr-4 inline-block">:</span>
+                                    <div x-text="invoiceNumber">{{billData?.billNumber}}</div>
+                                </div>
+
+                                <div class="mb-1 flex items-center">
+                                    <label
+                                        class="w-32 text-gray-800 block font-bold text-xs uppercase tracking-wide">Invoice
+                                        Date</label>
+                                    <span class="mr-4 inline-block">:</span>
+                                    <div x-text="invoiceDate">{{ billData?.billDate | date:'dd MMMM yyyy' }}</div>
+                                </div>
+
+                                <div class="mb-1 flex items-center">
+                                    <label
+                                        class="w-32 text-gray-800 block font-bold text-xs uppercase tracking-wide">Due
+                                        date</label>
+                                    <span class="mr-4 inline-block">:</span>
+                                    <div x-text="invoiceDueDate">{{ billData?.dueDate | date:'dd MMMM yyyy' }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap -mx-1 border-b py-2 items-start">
+                            <div class="flex-1 px-1">
+                                <p class="text-gray-600 uppercase tracking-wide text-xs font-bold">Items</p>
+                            </div>
+
+                            <div class="px-1 w-32 text-right">
+                                <p class="text-gray-600 uppercase tracking-wide text-xs font-bold">Quantity</p>
+                            </div>
+
+                            <div class="px-1 w-32 text-right">
+                                <p class="leading-none">
+                                    <span
+                                        class="block uppercase tracking-wide text-xs font-bold text-gray-600">Price</span>
+                                </p>
+                            </div>
+
+                            <div class="px-1 w-32 text-right">
+                                <p class="leading-none">
+                                    <span
+                                        class="block uppercase tracking-wide text-xs font-bold text-gray-600">Tax</span>
+                                </p>
+                            </div>
+
+                            <div class="px-1 w-32 text-right">
+                                <p class="leading-none">
+                                    <span
+                                        class="block uppercase tracking-wide text-xs font-bold text-gray-600">Total</span>
+                                </p>
+                            </div>
+                        </div>
+                        <section class="items" *ngFor="let items of billData?.items">
+                            <div class="flex flex-wrap -mx-1 py-2 border-b">
+                                <div class="flex-1 px-1">
+                                    <p class="text-gray-800" x-text="invoice.name">{{items?.product?.name}}</p>
+                                </div>
+
+                                <div class="px-1 w-32 text-right">
+                                    <p class="text-gray-800" x-text="invoice.qty">{{items?.quantity}}</p>
+                                </div>
+
+                                <div class="px-1 w-32 text-right">
+                                    <p class="text-gray-800" x-text="numberFormat(invoice.rate)">{{items?.price}} AED
+                                    </p>
+                                </div>
+                                <div class="px-1 w-32 text-right">
+                                    <p class="text-gray-800" x-text="numberFormat(invoice.tax)">
+                                        {{items?.taxPercentage}}%</p>
+                                </div>
+
+                                <div class="px-1 w-32 text-right">
+                                    <p class="text-gray-800" x-text="numberFormat(invoice.total)">{{items?.total}} AED
+                                    </p>
+                                </div>
+                            </div>
+                        </section>
+
+
+                        <div class="py-2 ml-auto mt-20" style="width: 320px">
+                            <div class="flex justify-between mb-3">
+                                <div class="text-gray-800 text-right flex-1">Subtotal</div>
+                                <div class="text-right w-40">
+                                    <div class="text-gray-800 font-medium" x-html="netTotal">{{billData?.totalAmount
+                                        -billData?.totalTaxAmount}} AED</div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between mb-3">
+                                <div class="text-gray-800 text-right flex-1">Tax Amount</div>
+                                <div class="text-right w-40">
+                                    <div class="text-gray-800 font-medium" x-html="netTotal">
+                                        {{billData?.totalTaxAmount}} AED</div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between mb-3">
+                                <div class="text-gray-800 text-right flex-1">Total incl. Tax</div>
+                                <div class="text-right w-40">
+                                    <div class="text-gray-800 font-medium" x-html="netTotal">{{billData?.totalAmount}}
+                                        AED</div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between mb-3">
+                                <div class="text-gray-800 text-right flex-1">Paid</div>
+                                <div class="text-right w-40">
+                                    <div class="text-gray-800 font-medium" x-html="netTotal">{{billData?.paidAmount}}
+                                        AED</div>
+                                </div>
+                            </div>
+
+
+                            <div class="py-2 border-t border-b">
+                                <div class="flex justify-between">
+                                    <div class="text-xl text-gray-600 text-right flex-1">Amount due</div>
+                                    <div class="text-right w-40">
+                                        <div class="text-xl text-gray-800 font-bold" x-html="netTotal">
+                                            {{billData?.remainingAmount}} AED</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </section>
+    </div>
+
+
+</section>
+
+
+
+
+
+
+<!-- add due date -->
+
+<section *ngIf="addDueDate">
+    <form [formGroup]="createDueDate" class="w-full">
+        <div class="main-modal fixed w-full h-100 inset-0 z-50 overflow-hidden flex justify-center items-center animated fadeIn faster"
+            style="background: rgba(0,0,0,.7);">
+            <div
+                class="border border-teal-500 modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+                <div class="modal-content py-4 text-left px-6">
+                    <!--Title-->
+                    <div class="flex justify-between items-center pb-3">
+                        <p class="text-2xl font-semibold ">Add Bill Due Date</p>
+                        <div class="modal-close cursor-pointer z-50" (click)="addDueDate = false">
+                            <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18"
+                                height="18" viewBox="0 0 18 18">
+                                <path
+                                    d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <!--Body-->
+                    <div>
+                        <label class="text-sm font-medium">Due Date<span class="text-[#FA003F]">*</span></label>
+                        <div class="mb-4">
+                            <div class=" mt-2">
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Choose a date</mat-label>
+                                    <input matInput [matDatepicker]="dueDate" formControlName="dueDate">
+                                    <mat-hint>DD/MM/YYYY</mat-hint>
+                                    <mat-datepicker-toggle matIconSuffix [for]="dueDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #dueDate></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Footer-->
+                    <div class="flex justify-end pt-2">
+                        <button
+                            class="focus:outline-none modal-close px-4 bg-gray-400 p-3 rounded-lg text-black hover:bg-gray-300"
+                            (click)="addDueDate = false">Cancel</button>
+                        <button class="focus:outline-none px-4 text-[#ffc600]  bg-[#f5f7bb] p-3 ml-3 rounded-lg"
+                            (click)="addBillDueDate()">Add Due Date</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+
+
+
+<!-- add payment -->
+
+<section *ngIf="addPayment">
+    <form [formGroup]="addPaymentForm" class="w-full">
+        <div class="main-modal fixed w-full h-100 inset-0 z-50 overflow-hidden flex justify-center items-center animated fadeIn faster"
+            style="background: rgba(0,0,0,.7);">
+            <div
+                class="border border-teal-500 modal-container bg-white w-7/12  mx-auto rounded shadow-lg z-50 overflow-y-auto">
+                <div class="modal-content py-4 text-left px-6">
+                    <!--Title-->
+                    <div class="flex justify-between items-center pb-3">
+                        <p class="text-2xl font-semibold ">Add Bill Payment</p>
+                        <div class="modal-close cursor-pointer z-50" (click)="addPayment = false">
+                            <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18"
+                                height="18" viewBox="0 0 18 18">
+                                <path
+                                    d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <!--Body-->
+                    <div>
+                        <div class="flex justify-center">
+                            <div class="mb-2">
+                                Remaining Balance : <span class="text-red-600">{{billData?.remainingAmount}}</span>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2" >
+                            <div>
+                                <div>
+                                    <label class="text-sm font-medium">Amount<span class="text-[#FA003F]">*</span></label>
+                                    <div class="mb-4 ">
+                                        <div class="flex items-center border-2 py-3 pb-4 px-3 rounded-md mt-2 bg-white">
+                
+                                            <span class="material-symbols-outlined h-6 w-6 text-gray-400">
+                                                attach_money
+                                            </span>
+                                            <input class="pl-2 pt-1 outline-none border-none w-full" formControlName="amount"  type="number"
+                                                name="" id=""  placeholder="Enter Amount" />
+                                        </div>
+                
+                                    </div>
+                
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-sm font-medium">Payment Date<span class="text-[#FA003F]">*</span></label>
+                                <div class="mb-4">
+                                    <div class=" mt-2">
+                                        <mat-form-field appearance="fill">
+                                            <mat-label>Choose a date</mat-label>
+                                            <input matInput [matDatepicker]="paymentDate" formControlName="date">
+                                            <mat-hint>DD/MM/YYYY</mat-hint>
+                                            <mat-datepicker-toggle matIconSuffix [for]="paymentDate"></mat-datepicker-toggle>
+                                            <mat-datepicker #paymentDate></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="text-sm font-medium">Payment Method <span class="text-[#FA003F]">*</span></label>
+                                <div class="flex items-center border-2 py-3 pb-4 px-3 rounded-md mb-4 mt-2 bg-white">
+            
+                                    <span class="material-symbols-outlined h-6 w-6 text-gray-400">
+                                        account_balance_wallet
+                                    </span>
+                                    <select class="pl-2 pt-1 outline-none border-none w-full" formControlName="method">
+                                        <option  [value]="'Cash'" selected>Cash</option>
+                                        <option  [value]="'Bank Transfer'" >Bank Transfer</option>
+                                    </select>
+                                    
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-sm font-medium">Account <span class="text-[#FA003F]">*</span></label>
+                                <div class="flex items-center border-2 py-3 pb-4 px-3 rounded-md mb-4 mt-2 bg-white">
+            
+                                    <span class="material-symbols-outlined h-6 w-6 text-gray-400">
+                                        account_balance
+                                    </span>
+                                    <select class="pl-2 pt-1 outline-none border-none w-full" formControlName="account">
+                                        <option class=" outline-none border-none w-full" value="" selected disabled >Choose</option>
+                                        <option  [value]="item._id" *ngFor="let item of accountList">{{item.name}}</option>
+                                    </select>
+                                    <span class="material-symbols-rounded h-6 w-6 cursor-pointer text-[#000103]" (click)="addAccount = true">
+                                        add_circle
+                                    </span>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Footer-->
+                    <div class="flex justify-end pt-2">
+                        <button
+                            class="focus:outline-none modal-close px-4 bg-gray-400 p-3 rounded-lg text-black hover:bg-gray-300"
+                            (click)="addPayment = false">Cancel</button>
+                        <button class="focus:outline-none px-4 text-[#ffc600]  bg-[#f5f7bb] p-3 ml-3 rounded-lg disabled:opacity-25" 
+                            (click)="addBillPayment()" [disabled]="addPaymentForm.invalid">Add Payment</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+
+
+
+<!-- add account -->
+<section *ngIf="addAccount">
+    <form  class="w-full">
+        <div class="main-modal fixed w-full h-100 inset-0 z-50 overflow-y-auto flex justify-center items-center animated fadeIn faster"
+            style="background: rgba(0,0,0,.7);">
+            <div
+                class="border border-teal-500 modal-container bg-white w-9/12 mx-auto rounded shadow-lg z-50 ">
+                <div class="modal-content py-4 text-left px-6">
+                    <!--Title-->
+                    <div class="flex justify-end items-center pb-3">
+                        <div class="modal-close cursor-pointer z-50" (click)="addAccount = false;getAllAccounts()">
+                            <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18"
+                                height="18" viewBox="0 0 18 18">
+                                <path
+                                    d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <!--Body-->
+                    <app-create-account [isPopUp]="true"></app-create-account>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>

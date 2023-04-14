@@ -5,7 +5,8 @@ import { ExpensesRoutingModule } from './expenses-routing.module';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+  ],
   imports: [
     CommonModule,
     ExpensesRoutingModule
