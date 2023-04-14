@@ -15,19 +15,13 @@ export class ErrorInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(catchError(err => {
             if ([401, 403].includes(err.status)) {
                 localStorage.clear();
-                this.router.navigateByUrl('auth')
-
+                this.router.navigateByUrl('auth/admin/login')
+                if (err?.error?.errors?.message){
+                    this.toastr.error(err?.error?.errors?.message);
+                      
+                }
             }
-            console.log(err);
-            this.toastr.error(err.error.message);
 
-            console.log(err?.error?.errors?.message);
-            if (err?.error?.errors?.message){
-                
-                  console.log(err?.error?.errors?.message);
-                  
-            }
-           
             return throwError(() => err?.error?.errors?.message);
         }))
     }

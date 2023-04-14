@@ -16,6 +16,7 @@ export class InventoryListingComponent implements OnInit {
   maxPage: number
   productList: any =[]
   search = ''
+  totalProduct: number
   constructor(private web: InventoryService) { }
 
   ngOnInit(): void {
@@ -26,15 +27,19 @@ export class InventoryListingComponent implements OnInit {
     this.page = data
     this.getAllProduct()
   }
-  next(){
-    this.page = this.page+1
-    this.getAllProduct()
+
+  pagination(data){
+    if(data == 'prev'){
+      this.page  = this.page - 1
+      this.getAllProduct()
+    }
+    if(data == 'next'){
+      this.page  = this.page + 1
+      this.getAllProduct()
+
+    }
+
   }
-  prev(){
-    this.page = this.page-1
-    this.getAllProduct()
-  }
-  
 
 
   getAllProduct() {
@@ -44,6 +49,7 @@ export class InventoryListingComponent implements OnInit {
         this.productList = res["products"];
         this.isLastPage = res["isLastPage"]
         this.maxPage = res["maxPage"]
+        this.totalProduct = res['count']
         console.log(this.productList);
         console.log(this.maxPage);
 
@@ -58,6 +64,8 @@ export class InventoryListingComponent implements OnInit {
       }
     });
   }
+
+  
 
   async searchProduct() {
     this.page = 1
