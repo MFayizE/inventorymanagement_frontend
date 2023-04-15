@@ -7,6 +7,7 @@ import html2canvas from 'html2canvas';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { lastValueFrom } from 'rxjs';
+import { DialogConfirmService } from 'src/app/shared/components/services/dialog-confirm.service';
 export const MY_DATE_FORMATS = {
   parse: {
     dateInput: 'DD/MM/YYYY',
@@ -27,6 +28,9 @@ export const MY_DATE_FORMATS = {
   ]
 })
 export class BillViewComponent {
+  clickedRecieved: boolean = false
+  clickedDue: boolean = false
+  clickedPayment: boolean = false
   billId: any
   loader: boolean = false
   billData: any
@@ -39,7 +43,8 @@ export class BillViewComponent {
   constructor(private route: ActivatedRoute,
     private web: BillsService,
     private fb: FormBuilder,
-    private toastr: ToastrService) {
+    private toastr: ToastrService,
+    private dialog: DialogConfirmService) {
 
   }
 
@@ -78,6 +83,7 @@ export class BillViewComponent {
         this.loader = false;
       },
       complete: () => {
+        this.loader = false;
         console.log('Observable completed');
         this.getAllAccounts()
       }
@@ -85,6 +91,7 @@ export class BillViewComponent {
   }
 
   getAllAccounts() {
+    this.loader = true
     this.web.getAllAccounts().subscribe({
       next: (res) => {
         this.accountList = res;
@@ -95,6 +102,7 @@ export class BillViewComponent {
         this.loader = false;
       },
       complete: () => {
+        this.loader = false;
         console.log('Observable completed');
       }
     });
@@ -110,6 +118,15 @@ export class BillViewComponent {
       PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
       PDF.save('angular-demo.pdf');
     });
+  }
+
+  openAddDueDate(){
+    this.createDueDate.controls['dueDate'].patchValue(this.billData?.billDate);
+    this.addDueDate = true
+  }
+  openAddPayment(){
+    this.addPaymentForm.controls['date'].patchValue(this.billData?.billDate);
+    this.addPayment = true
   }
 
   async addBillDueDate() {
@@ -128,15 +145,34 @@ export class BillViewComponent {
 
       }
     } catch (error) {
+      this.clickedDue = false
       console.log(error);
       this.toastr.error(error.error.message);
+      
 
     }
 
   }
 
-  async markBillRecieved() {
+  openMarkBillRecieved(){
+    this.dialog
+    .confirmDialog({
+      title: 'Receive Bill?',
+      message: 'Do you want to Receive Bill?',
+      confirmCaption: 'Confirm',
+      cancelCaption: 'Cancel',
+    })
+    .subscribe((confirmed) => {
+      if (confirmed) {
+        this.markBillRecieved()
+      }
+      else{
+        this.clickedRecieved = false
+      }
+    });
+  }
 
+  async markBillRecieved() {
     try {
       const result$ = await this.web.markBillRecieved(this.billId)
       const res = await lastValueFrom(result$);
@@ -147,6 +183,7 @@ export class BillViewComponent {
       }
     } catch (error) {
       console.log(error);
+      this.clickedRecieved = false
       this.toastr.error(error.error.message);
 
     }
@@ -171,12 +208,14 @@ export class BillViewComponent {
       if (res) {
         this.addPaymentForm.reset();
         this.addPayment = false
+        this.clickedPayment = false
         this.ngOnInit()
 
         this.toastr.success("Payment Added Successfully!");
 
       }
     } catch (error) {
+      this.clickedPayment = false
       console.log(error);
       this.toastr.error(error.error.message);
 

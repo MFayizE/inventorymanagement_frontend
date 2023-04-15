@@ -1,4 +1,19 @@
-<section>
+<section class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" *ngIf="loader">
+    <section>
+        <div class="lds-roller">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+    </section>
+</section>
+<section *ngIf="!loader">
     <div class="w-full  px-4 mx-auto mt-16">
         <section class="mb-5">
             <section *ngIf="billData?.status != 'Paid'">
@@ -10,7 +25,7 @@
                         <div class="mt-4 pl-2 mb-2 flex justify-end mr-2 ">
                             <button
                                 class="bg-[black] px-8 py-3 rounded-md text-sm text-[#009cff] disabled:opacity-25 hover:bg-[#a7ddff]"
-                                [disabled]="billData?.status != 'Draft'" (click)="markBillRecieved()">MARK
+                                [disabled]="billData?.status != 'Draft' || clickedRecieved" (click)="openMarkBillRecieved();clickedRecieved = true">MARK
                                 RECIEVED</button>
                         </div>
                     </div>
@@ -22,7 +37,7 @@
                             <button
                                 class="bg-[black] px-8 py-3 rounded-md text-sm text-[#ffc600] disabled:opacity-25 hover:bg-[#f5f7bb]"
                                 [disabled]="billData?.status != 'Received' || billData?.dueDate"
-                                (click)="addDueDate = true">ADD DUE DATE</button>
+                                (click)="openAddDueDate()">ADD DUE DATE</button>
                         </div>
                     </div>
 
@@ -33,7 +48,7 @@
                         <div class="mt-4 pl-2 mb-2 flex justify-end mr-2 ">
                             <button
                                 class="bg-[black] px-8 py-3 rounded-md text-sm text-[#71e76b] disabled:opacity-25 hover:bg-[#cdfccb]"
-                                [disabled]="!billData?.dueDate || billData?.status == 'Paid' " (click)="addPayment = true">ADD PAYMENT</button>
+                                [disabled]="!billData?.dueDate || billData?.status == 'Paid' " (click)="openAddPayment()">ADD PAYMENT</button>
                         </div>
                     </div>
 
@@ -282,8 +297,8 @@
                         <button
                             class="focus:outline-none modal-close px-4 bg-gray-400 p-3 rounded-lg text-black hover:bg-gray-300"
                             (click)="addDueDate = false">Cancel</button>
-                        <button class="focus:outline-none px-4 text-[#ffc600]  bg-[#f5f7bb] p-3 ml-3 rounded-lg"
-                            (click)="addBillDueDate()">Add Due Date</button>
+                        <button class="bg-[black] ml-5 px-8 py-3 rounded-md text-sm text-[#ffc600] disabled:opacity-25 hover:bg-[#f5f7bb]"
+                            (click)="addBillDueDate();clickedDue = true" [disabled]="createDueDate.invalid || clickedDue">Add Due Date</button>
                     </div>
                 </div>
             </div>
@@ -394,8 +409,8 @@
                         <button
                             class="focus:outline-none modal-close px-4 bg-gray-400 p-3 rounded-lg text-black hover:bg-gray-300"
                             (click)="addPayment = false">Cancel</button>
-                        <button class="focus:outline-none px-4 text-[#ffc600]  bg-[#f5f7bb] p-3 ml-3 rounded-lg disabled:opacity-25" 
-                            (click)="addBillPayment()" [disabled]="addPaymentForm.invalid">Add Payment</button>
+                        <button class="ml-2 bg-[black] px-8 py-3 rounded-md text-sm text-[#71e76b] disabled:opacity-25 hover:bg-[#cdfccb]"
+                            (click)="addBillPayment(); clickedPayment = true" [disabled]="addPaymentForm.invalid || clickedPayment">Add Payment</button>
                     </div>
                 </div>
             </div>
