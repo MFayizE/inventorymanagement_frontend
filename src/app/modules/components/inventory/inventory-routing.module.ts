@@ -2,6 +2,7 @@ import { InventoryCreatingComponent } from './inventory-creating/inventory-creat
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { InventoryListingComponent } from './inventory-listing/inventory-listing.component';
+import { EditProductComponent } from './edit-product/edit-product.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
   {
     path:'create',
     component:InventoryCreatingComponent
+  },
+  {
+    path:'update/:id',
+    component:EditProductComponent
   }
 ];
 

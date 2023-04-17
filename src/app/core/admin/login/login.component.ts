@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { lastValueFrom } from 'rxjs';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private web:AdminService,    private router: Router,
+  constructor(private fb: FormBuilder, private web:AdminService,  private toastr: ToastrService,  private router: Router,
     ) { }
 
   ngOnInit(): void {
@@ -45,6 +46,7 @@ export class LoginComponent implements OnInit {
 
       }
     } catch (error) {
+      this.toastr.error(error.error.message);
       console.log(error);
       
     }
