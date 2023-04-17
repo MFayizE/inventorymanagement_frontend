@@ -26,6 +26,12 @@ export class InventoryService {
     return  this.http.get(`${serverURL}/api/category/all`).pipe(catchError(this.handleError));
 
   }
+
+  getProductByID(id){
+    
+    return  this.http.get(`${serverURL}/api/product/${id}`).pipe(catchError(this.handleError));
+
+  }
   
   getAllProduct(page,limit,search){
     const params = {
@@ -45,6 +51,10 @@ export class InventoryService {
   }
   createProduct(data){
     return this.http.post(`${serverURL}/api/product/add`,data)
+
+  }
+  updateProduct(id,data){
+    return this.http.put(`${serverURL}/api/product/${id}`,data)
 
   }
   searchProduct(search,page,limit){

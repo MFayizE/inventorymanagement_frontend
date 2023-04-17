@@ -17,6 +17,7 @@ import { MomentDateModule } from '@angular/material-moment-adapter';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDialogModule} from '@angular/material/dialog';
 import { DialogConfirmComponent } from './components/dialog-confirm/dialog-confirm.component';
+import {MatMenuModule} from '@angular/material/menu';
 @NgModule({
   declarations: [
     DialogConfirmComponent
@@ -29,7 +30,7 @@ import { DialogConfirmComponent } from './components/dialog-confirm/dialog-confi
     NgxPaginationModule,
     FormsModule,
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,MatMenuModule
   ],
   exports: [
     ReactiveFormsModule,
@@ -45,7 +46,7 @@ import { DialogConfirmComponent } from './components/dialog-confirm/dialog-confi
     MatNativeDateModule,
     MomentDateModule ,
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,MatMenuModule
   ]
 })
 export class SharedModule { }
