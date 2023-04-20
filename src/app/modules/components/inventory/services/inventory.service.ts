@@ -72,6 +72,25 @@ export class InventoryService {
   createProductCategory(data){
     return this.http.post(`${serverURL}/api/category/add`,data)
   }
+  updateProductCategory(id,data){
+    return this.http.put(`${serverURL}/api/category/update/${id}`,data)
+  }
+  getAllCategoryList(page,limit,name){
+    const params = {
+      name,
+      page,
+      limit
+    };
+    if(name){
+      return this.http.get(`${serverURL}/api/category/view?`,{params:params}).pipe(catchError(this.handleError));
+
+    }
+    else{
+      return  this.http.get(`${serverURL}/api/category/view?page=${page}&limit=${limit}`).pipe(catchError(this.handleError));
+
+    }
+
+  }
 
   handleError(error: any) {
     let errorMessage = '';
