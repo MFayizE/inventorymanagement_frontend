@@ -143,6 +143,7 @@ export class InventoryCreatingComponent implements OnInit {
       if (res) {
         this.toastr.success("Product successfully created!");
         console.log(res);
+        this.clicked=false
         this.ngOnInit()
 
       }

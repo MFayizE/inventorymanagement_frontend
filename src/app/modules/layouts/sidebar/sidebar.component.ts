@@ -11,7 +11,10 @@ export class SidebarComponent implements OnInit {
   submenuIndex = -1;
   menus = [
     { name: "Dashboard", link: "/admin/dash", icon: "dashboard", hasSubmenu: false },
-    { name: "Inventory", link: "/admin/inventory", icon: "inventory_2", hasSubmenu: false },
+    { name: "Inventory", link: "/admin/inventory", icon: "inventory_2", hasSubmenu: true, submenus: [
+      { name: "Categories", link: "/admin/inventory/category", icon: "category" },
+    ]
+  },
     {
       name: "Incomes", link: "#", icon: "payments", margin: true, hasSubmenu: true, submenus: [
         { name: "Invoices", link: "/", icon: "receipt_long" },
