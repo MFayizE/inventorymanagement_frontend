@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { InventoryListingComponent } from './inventory-listing/inventory-listing.component';
 import { EditProductComponent } from './edit-product/edit-product.component';
+import { ListCategoryComponent } from './list-category/list-category.component';
 
 const routes: Routes = [
   {
@@ -16,7 +17,12 @@ const routes: Routes = [
   {
     path:'update/:id',
     component:EditProductComponent
-  }
+  },
+  {
+    path:'category',
+    component:ListCategoryComponent
+  },
+
 ];
 
 @NgModule({

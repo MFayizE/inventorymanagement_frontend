@@ -5,16 +5,16 @@ import { CommonModule } from '@angular/common';
 import { InventoryRoutingModule } from './inventory-routing.module';
 import { InventoryListingComponent } from './inventory-listing/inventory-listing.component';
 import { InventoryCreatingComponent } from './inventory-creating/inventory-creating.component';
-import { AddProductCategoryComponent } from './add-product-category/add-product-category.component';
 import { EditProductComponent } from './edit-product/edit-product.component';
+import { ListCategoryComponent } from './list-category/list-category.component';
 
 
 @NgModule({
   declarations: [
     InventoryListingComponent,
     InventoryCreatingComponent,
-    AddProductCategoryComponent,
-    EditProductComponent
+    EditProductComponent,
+    ListCategoryComponent,
   ],
   imports: [
     CommonModule,
