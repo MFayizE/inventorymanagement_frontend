@@ -15,6 +15,14 @@
 </section>
 <section *ngIf="!loader">
     <div class="w-full  px-4 mx-auto mt-16">
+        <div class="w-full flex justify-between">
+            <div class="flex ">
+            </div>
+            <div class="flex ">
+                <button class="bg-[#000103] px-5 py-2 rounded-md text-sm text-[#FFFEFE]"
+                [routerLink]="'/admin/expenses/bills/edit/' + billId">Edit Bill</button>
+            </div>
+        </div>
         <section class="mb-5">
             <section *ngIf="billData?.status != 'Paid'">
                 <section class=" grid grid-cols-1 md:grid-cols-3 ">

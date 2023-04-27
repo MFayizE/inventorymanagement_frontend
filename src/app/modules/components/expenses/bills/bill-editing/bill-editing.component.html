@@ -112,6 +112,24 @@
                     </div>
                 </div>
             </div>
+            <div class="grid md:grid-cols-2 gap-4" *ngIf="billData?.dueDate">
+                <div>
+                    <label class="text-sm font-medium">Due Date<span class="text-[#FA003F]">*</span></label>
+                    <div class="mb-4">
+                        <div class=" mt-2">
+
+                            <mat-form-field appearance="fill">
+                                <mat-label>Choose a date</mat-label>
+                                <input matInput [matDatepicker]="dueDate" formControlName="dueDate">
+                                <mat-hint>DD/MM/YYYY</mat-hint>
+                                <mat-datepicker-toggle matIconSuffix [for]="dueDate"></mat-datepicker-toggle>
+                                <mat-datepicker #dueDate></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+                </div>
 
             <div class="relative min-w-0 mb-6 bg-white">
                 <div class="overflow-x-auto grid grid-cols-1">
