@@ -109,7 +109,23 @@
                                 </td>
                                 
                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                    <div>
+                                        <button mat-icon-button [matMenuTriggerFor]="more">
+                                            <span class="material-symbols-outlined cursor-pointer">
+                                                more_vert
+                                            </span>
+                                        </button>
+                                        <mat-menu #more="matMenu" xPosition="before">
+                                            <!-- <button mat-menu-item [routerLink]="">
+                                                <span>Delete Activity</span>
+                                            </button> -->
+                                            <button mat-menu-item [routerLink]="'/admin/expenses/bills/edit/' + data?._id">
 
+                                                <span>Edit Bill</span>
+
+                                            </button>
+                                        </mat-menu>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>

@@ -6,17 +6,29 @@
   'GRAD' 200,
   'opsz' 48
 }
-
-
-:host ::ng-deep .ng-select .ng-select-container {
+:host ::ng-deep .ng-select .ng-select-container{
+   
   color: #333;
   background-color: #fff;
-  border-radius: 4px;
-  border: 2px solid #9CA3AF;
-  min-height: 36px;
+  border: 0px solid #9CA3AF;
+  max-height: 15px !important;
   align-items: center;
-  min-width: 300px;
+
 }
+
+:host ::ng-deep .productSelect .ng-select .ng-select-container{
+   
+    color: #333;
+    background-color: #fff;
+    border-radius: 4px;
+    border: 2px solid #9CA3AF;
+    min-height: 36px;
+    align-items: center;
+    min-width: 300px;
+  
+}
+
+
 
 mat-form-field {
   width: 100% !important;
