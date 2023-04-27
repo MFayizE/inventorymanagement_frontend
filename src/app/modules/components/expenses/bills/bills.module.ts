@@ -9,12 +9,14 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { BillViewComponent } from './bill-view/bill-view.component';
 import { VendorsModule } from '../vendors/vendors.module';
 import { AccountsModule } from '../../banking/accounts/accounts.module';
+import { BillEditingComponent } from './bill-editing/bill-editing.component';
 
 @NgModule({
   declarations: [
     BillListingComponent,
     BillAddingComponent,
-    BillViewComponent
+    BillViewComponent,
+    BillEditingComponent
   ],
   imports: [
     CommonModule,

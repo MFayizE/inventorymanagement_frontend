@@ -38,6 +38,9 @@ export class BillsService {
     return this.http.post(`${serverURL}/api/bill`,data)
 
   }
+  editBill(id,data){
+    return this.http.put(`${serverURL}/api/bill/edit/${id}`,data)
+  }
   createVendor(data){
     return this.http.post(`${serverURL}/api/vendor/add`,data)
 
@@ -73,6 +76,11 @@ export class BillsService {
 
   }
 
+  getBillByID(id){
+    
+    return  this.http.get(`${serverURL}/api/bill/${id}`).pipe(catchError(this.handleError));
+
+  }
 
   handleError(error: any) {
     let errorMessage = '';

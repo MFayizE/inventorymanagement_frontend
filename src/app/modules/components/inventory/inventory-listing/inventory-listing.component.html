@@ -58,36 +58,116 @@
                         <thead>
                             <tr>
                                 <th
-                                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Name
+                                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider ">
+                                    <div class="flex items-center gap-3  cursor-pointer" (click)="sortData('name')">
+                                        <div>
+                                            Name 
+                                        </div>
+                                        <div [ngClass]="{'text-indigo-600': sortBy == 'name'}">
+                                            <span class="material-symbols-outlined"  *ngIf="sortOrder == 'asc'" >arrow_upward</span>
+                                            <span class="material-symbols-outlined " *ngIf="sortOrder == 'desc'">arrow_downward</span>
+                                        </div>
+                                  
+                                    </div>
+                                    
+                                </th>
+                                <th
+                                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider ">
+                                    <div class="flex items-center gap-3  cursor-pointer" (click)="sortData('SKU')">
+                                        <div>
+                                            SKU 
+                                        </div>
+                                        <div [ngClass]="{'text-indigo-600': sortBy == 'SKU'}">
+                                            <span class="material-symbols-outlined"  *ngIf="sortOrder == 'asc'" >arrow_upward</span>
+                                            <span class="material-symbols-outlined " *ngIf="sortOrder == 'desc'">arrow_downward</span>
+                                        </div>
+                                  
+                                    </div>
                                 </th>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    SKU
+                                    <div class="flex items-center gap-3  cursor-pointer" (click)="sortData('categoryId')">
+                                        <div>
+                                            Category 
+                                        </div>
+                                        <div class="px-4">
+
+                                        </div>
+                                        <!-- <div [ngClass]="{'text-indigo-600': sortBy == 'categoryId'}">
+                                            <span class="material-symbols-outlined"  *ngIf="sortOrder == 'asc'" >arrow_upward</span>
+                                            <span class="material-symbols-outlined " *ngIf="sortOrder == 'desc'">arrow_downward</span>
+                                        </div> -->
+                                  
+                                    </div>
                                 </th>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Category
+                                    <div class="flex items-center gap-3  cursor-pointer" (click)="sortData('quantity')">
+                                        <div>
+                                            Quantity 
+                                        </div>
+                                        <div [ngClass]="{'text-indigo-600': sortBy == 'quantity'}">
+                                            <span class="material-symbols-outlined"  *ngIf="sortOrder == 'asc'" >arrow_upward</span>
+                                            <span class="material-symbols-outlined " *ngIf="sortOrder == 'desc'">arrow_downward</span>
+                                        </div>
+                                  
+                                    </div>
+
                                 </th>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Quantity
+
+                                    <div class="flex items-center gap-3  cursor-pointer" (click)="sortData('salePrice')">
+                                        <div>
+                                            Sale Price 
+                                        </div>
+                                        <div [ngClass]="{'text-indigo-600': sortBy == 'salePrice'}">
+                                            <span class="material-symbols-outlined"  *ngIf="sortOrder == 'asc'" >arrow_upward</span>
+                                            <span class="material-symbols-outlined " *ngIf="sortOrder == 'desc'">arrow_downward</span>
+                                        </div>
+                                  
+                                    </div>
                                 </th>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Sale Price
+                                    
+                                    <div class="flex items-center gap-3  cursor-pointer" (click)="sortData('purchasePrice')">
+                                        <div>
+                                            Purchase Price
+                                        </div>
+                                        <div [ngClass]="{'text-indigo-600': sortBy == 'purchasePrice'}">
+                                            <span class="material-symbols-outlined"  *ngIf="sortOrder == 'asc'" >arrow_upward</span>
+                                            <span class="material-symbols-outlined " *ngIf="sortOrder == 'desc'">arrow_downward</span>
+                                        </div>
+                                  
+                                    </div>
                                 </th>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Purchase Price
+                                 
+                                    <div class="flex items-center gap-3  cursor-pointer" (click)="sortData('enabled')">
+                                        <div>
+                                            Status
+                                        </div>
+                                        <div [ngClass]="{'text-indigo-600': sortBy == 'enabled'}">
+                                            <span class="material-symbols-outlined"  *ngIf="sortOrder == 'asc'" >arrow_upward</span>
+                                            <span class="material-symbols-outlined " *ngIf="sortOrder == 'desc'">arrow_downward</span>
+                                        </div>
+                                  
+                                    </div>
                                 </th>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Status
-                                </th>
-                                <th
-                                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Bill
+                                    <div class="flex items-center gap-3  cursor-pointer" (click)="sortData('enableBill')">
+                                        <div>
+                                            Bill
+                                        </div>
+                                        <div [ngClass]="{'text-indigo-600': sortBy == 'enableBill'}">
+                                            <span class="material-symbols-outlined"  *ngIf="sortOrder == 'asc'" >arrow_upward</span>
+                                            <span class="material-symbols-outlined " *ngIf="sortOrder == 'desc'">arrow_downward</span>
+                                        </div>
+                                  
+                                    </div>
                                 </th>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
