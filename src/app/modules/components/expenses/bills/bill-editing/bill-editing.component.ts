@@ -61,6 +61,7 @@ export class BillEditingComponent implements OnInit {
       vendorId: ['', Validators.required],
       billDate: ['', Validators.required],
       billNumber: ['', Validators.required],
+      dueDate: ['']
 
     });
     this.createCategory = this.fb.group({
@@ -108,6 +109,11 @@ export class BillEditingComponent implements OnInit {
         this.createBillForm.controls['billDate'].patchValue(this.billData?.billDate);
 
         this.createBillForm.controls['billNumber'].patchValue(this.billData?.billNumber);
+        if(this.billData?.dueDate){
+          this.createBillForm.controls['dueDate'].patchValue(this.billData?.dueDate);
+        }
+
+        
       }
     });
   }
@@ -277,9 +283,15 @@ export class BillEditingComponent implements OnInit {
       "billDate": this.createBillForm.value.billDate,
       "billNumber": this.createBillForm.value.billNumber,
       "items": this.createBillForm.value.items,
-      "categoryId": this.createBillForm.value.categoryId
+      "categoryId": this.createBillForm.value.categoryId,
+ 
 
     }
+
+    if(this.createBillForm.value.dueDate){
+      payload["dueDate"] = this.createBillForm.value.dueDate
+    }
+
     console.log('payload: ', payload);
 
 
