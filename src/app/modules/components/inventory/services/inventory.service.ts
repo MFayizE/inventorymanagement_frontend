@@ -33,7 +33,7 @@ export class InventoryService {
 
   }
   
-  getAllProduct(page,limit,search){
+  getAllProduct(page,limit,search,sortBy,sortOrder){
     const params = {
       search,
       page,
@@ -44,7 +44,12 @@ export class InventoryService {
 
     }
     else{
-      return  this.http.get(`${serverURL}/api/product?page=${page}&limit=${limit}`).pipe(catchError(this.handleError));
+      if(sortBy){
+        return  this.http.get(`${serverURL}/api/product?sortBy=${sortBy}&sortOrder=${sortOrder}&page=${page}&limit=${limit}`).pipe(catchError(this.handleError));
+      }
+      else{
+        return  this.http.get(`${serverURL}/api/product?page=${page}&limit=${limit}`).pipe(catchError(this.handleError));
+      }
 
     }
 

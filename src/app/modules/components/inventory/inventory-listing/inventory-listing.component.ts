@@ -1,5 +1,6 @@
 import { InventoryService } from './../services/inventory.service';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { lastValueFrom } from 'rxjs';
 
 @Component({
@@ -17,10 +18,19 @@ export class InventoryListingComponent implements OnInit {
   productList: any =[]
   search = ''
   totalProduct: number
-  constructor(private web: InventoryService) { }
+  sortOrder: string = 'asc'
+  sortBy: string
+  // sortForm: FormGroup;
+  constructor(private web: InventoryService,private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.getAllProduct()
+    // this.sortForm = this.fb.group({
+    //   name: ['', Validators.required],
+    //   SKU: ['', Validators.required],
+    //   categoryId : ['', Validators.required],
+
+    // })
   }
 
   onClickPage(data){
@@ -40,11 +50,36 @@ export class InventoryListingComponent implements OnInit {
     }
 
   }
-
+  
+  sortData(sort){
+    this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+    if(sort == 'name'){
+      this.sortBy = 'name'
+    }
+    if(sort == 'SKU'){
+      this.sortBy = 'SKU'
+    }
+    if(sort == 'enableBill'){
+      this.sortBy = 'enableBill'
+    }
+    if(sort == 'enabled'){
+      this.sortBy = 'enabled'
+    }
+    if(sort == 'purchasePrice'){
+      this.sortBy = 'purchasePrice'
+    }
+    if(sort == 'quantity'){
+      this.sortBy = 'quantity'
+    }
+    if(sort == 'salePrice'){
+      this.sortBy = 'salePrice'
+    }
+    this.getAllProduct()
+  }
 
   getAllProduct() {
     this.loader = true
-    this.web.getAllProduct(this.page,this.limit,this.search).subscribe({
+    this.web.getAllProduct(this.page,this.limit,this.search,this.sortBy,this.sortOrder).subscribe({
       next: (res) => {
         this.productList = res["products"];
         this.isLastPage = res["isLastPage"]

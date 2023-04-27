@@ -46,3 +46,13 @@
         opacity: 0;
     }
 }
+
+:host ::ng-deep .ng-select .ng-select-container{
+   
+    color: #333;
+    background-color: #fff;
+    border: 0px solid #9CA3AF;
+    max-height: 15px !important;
+    align-items: center;
+  
+  }

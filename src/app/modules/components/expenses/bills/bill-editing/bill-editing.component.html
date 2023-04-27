@@ -18,7 +18,7 @@
 <section *ngIf="!loader">
     <form [formGroup]="createBillForm" class="w-full">
         <div class="w-full  px-4 mx-auto mt-16">
-            <h1 class="text-2xl font-semibold mb-4">Create Bill</h1>
+            <h1 class="text-2xl font-semibold mb-4">Edit Bill</h1>
 
             <div class="grid md:grid-cols-2 gap-4">
 
@@ -151,7 +151,7 @@
 
                                     <div class="font-semibold  text-left "><span
                                             class="material-symbols-rounded text-[#FA003F] cursor-pointer"
-                                            (click)="removeItem(i)">
+                                            (click)="removeItem(i);" >
                                             disabled_by_default
                                         </span></div>
                                 </th>
