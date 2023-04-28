@@ -9,11 +9,12 @@ import { BillsService } from '../services/bills.service';
 export class BillListingComponent implements OnInit {
   loader: boolean = false
   page : number = 1 
-  limit: number = 25
+  limit: number = 10
   isLastPage: boolean
   totalBill : number
   maxPage: number
   billList : any = []
+  pageLimitMessage: string
   constructor(private web: BillsService) { }
 
   ngOnInit(): void {
@@ -28,6 +29,7 @@ export class BillListingComponent implements OnInit {
         this.isLastPage = res["isLastPage"]
         this.maxPage = res["maxPage"]
         this.totalBill = res['count']
+        this.pageLimitMessage = res['message']
         console.log(this.billList);
         console.log(this.maxPage);
 
@@ -53,6 +55,12 @@ export class BillListingComponent implements OnInit {
       this.getAllBill()
 
     }
+
+  }
+
+  getPage(newPage){
+    this.page = newPage
+    this.getAllBill()
 
   }
 
