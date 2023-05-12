@@ -9,12 +9,14 @@ import { BillsService } from '../services/bills.service';
 export class BillListingComponent implements OnInit {
   loader: boolean = false
   page : number = 1 
-  limit: number = 10
+  limit: number = 25
   isLastPage: boolean
   totalBill : number
   maxPage: number
   billList : any = []
   pageLimitMessage: string
+  sortOrder: string = 'asc'
+  sortBy: string
   constructor(private web: BillsService) { }
 
   ngOnInit(): void {
@@ -23,7 +25,7 @@ export class BillListingComponent implements OnInit {
 
   getAllBill(){
     this.loader = true
-    this.web.getAllBillList(this.page,this.limit).subscribe({
+    this.web.getAllBillList(this.page,this.limit,this.sortBy,this.sortOrder).subscribe({
       next: (res) => {
         this.billList = res["bills"];
         this.isLastPage = res["isLastPage"]
@@ -63,6 +65,27 @@ export class BillListingComponent implements OnInit {
     this.getAllBill()
 
   }
+  sortData(sort){
+    this.page = 1
+    this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+    if(sort == 'billNumber'){
+      this.sortBy = 'billNumber'
+    }
+    if(sort == 'totalAmount'){
+      this.sortBy = 'totalAmount'
+    }
+    if(sort == 'billDate'){
+      this.sortBy = 'billDate'
+    }
+    if(sort == 'dueDate'){
+      this.sortBy = 'dueDate'
+    }
+    if(sort == 'status'){
+      this.sortBy = 'status'
+    }
+    this.getAllBill()
+  }
+
 
 
 }

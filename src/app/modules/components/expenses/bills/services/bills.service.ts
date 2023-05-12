@@ -70,9 +70,13 @@ export class BillsService {
   }
 
   
-  getAllBillList(page,limit){
-    
-    return  this.http.get(`${serverURL}/api/bill?page=${page}&limit=${limit}`).pipe(catchError(this.handleError));
+  getAllBillList(page,limit,sortBy,sortOrder){
+    if(sortBy){
+      return  this.http.get(`${serverURL}/api/bill?sortBy=${sortBy}&sortOrder=${sortOrder}&page=${page}&limit=${limit}`).pipe(catchError(this.handleError));
+    }
+    else{
+      return  this.http.get(`${serverURL}/api/bill?page=${page}&limit=${limit}`).pipe(catchError(this.handleError));
+    }
 
   }
 
