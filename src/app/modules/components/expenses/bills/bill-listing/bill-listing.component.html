@@ -36,7 +36,17 @@
                             <tr>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Number
+                                    
+                                    <div class="flex items-center gap-3  cursor-pointer" (click)="sortData('billNumber')">
+                                        <div>
+                                            Number 
+                                        </div>
+                                        <div [ngClass]="{'text-indigo-600': sortBy == 'billNumber'}">
+                                            <span class="material-symbols-outlined"  *ngIf="sortOrder == 'asc'" >arrow_upward</span>
+                                            <span class="material-symbols-outlined " *ngIf="sortOrder == 'desc'">arrow_downward</span>
+                                        </div>
+                                  
+                                    </div>
                                 </th>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -44,19 +54,57 @@
                                 </th>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Amount 
+                                    <div class="flex items-center gap-3  cursor-pointer" (click)="sortData('totalAmount')">
+                                        <div>
+                                            Amount 
+                                        </div>
+                                        <div [ngClass]="{'text-indigo-600': sortBy == 'totalAmount'}">
+                                            <span class="material-symbols-outlined"  *ngIf="sortOrder == 'asc'" >arrow_upward</span>
+                                            <span class="material-symbols-outlined " *ngIf="sortOrder == 'desc'">arrow_downward</span>
+                                        </div>
+                                  
+                                    </div>
                                 </th>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Bill Date
+                                    
+                                    <div class="flex items-center gap-3  cursor-pointer" (click)="sortData('billDate')">
+                                        <div>
+                                            Bill Date 
+                                        </div>
+                                        <div [ngClass]="{'text-indigo-600': sortBy == 'billDate'}">
+                                            <span class="material-symbols-outlined"  *ngIf="sortOrder == 'asc'" >arrow_upward</span>
+                                            <span class="material-symbols-outlined " *ngIf="sortOrder == 'desc'">arrow_downward</span>
+                                        </div>
+                                  
+                                    </div>
                                 </th>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Due Date
+                                   
+                                    <div class="flex items-center gap-3  cursor-pointer" (click)="sortData('dueDate')">
+                                        <div>
+                                            Due Date 
+                                        </div>
+                                        <div [ngClass]="{'text-indigo-600': sortBy == 'dueDate'}">
+                                            <span class="material-symbols-outlined"  *ngIf="sortOrder == 'asc'" >arrow_upward</span>
+                                            <span class="material-symbols-outlined " *ngIf="sortOrder == 'desc'">arrow_downward</span>
+                                        </div>
+                                  
+                                    </div>
                                 </th>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Status
+                                    <div class="flex items-center gap-3  cursor-pointer" (click)="sortData('status')">
+                                        <div>
+                                            Status
+                                        </div>
+                                        <div [ngClass]="{'text-indigo-600': sortBy == 'status'}">
+                                            <span class="material-symbols-outlined"  *ngIf="sortOrder == 'asc'" >arrow_upward</span>
+                                            <span class="material-symbols-outlined " *ngIf="sortOrder == 'desc'">arrow_downward</span>
+                                        </div>
+                                  
+                                    </div>
                                 </th>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
