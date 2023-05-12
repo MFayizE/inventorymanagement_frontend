@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BillsService } from '../services/bills.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-bill-listing',
@@ -7,6 +8,7 @@ import { BillsService } from '../services/bills.service';
   styleUrls: ['./bill-listing.component.scss']
 })
 export class BillListingComponent implements OnInit {
+  search = ''
   loader: boolean = false
   page : number = 1 
   limit: number = 25
@@ -17,15 +19,17 @@ export class BillListingComponent implements OnInit {
   pageLimitMessage: string
   sortOrder: string = 'asc'
   sortBy: string
+  totalExpense:number
   constructor(private web: BillsService) { }
 
   ngOnInit(): void {
     this.getAllBill()
+    this.getTotalExpense()
   }
 
   getAllBill(){
     this.loader = true
-    this.web.getAllBillList(this.page,this.limit,this.sortBy,this.sortOrder).subscribe({
+    this.web.getAllBillList(this.page,this.limit,this.search,this.sortBy,this.sortOrder).subscribe({
       next: (res) => {
         this.billList = res["bills"];
         this.isLastPage = res["isLastPage"]
@@ -86,6 +90,21 @@ export class BillListingComponent implements OnInit {
     this.getAllBill()
   }
 
+  async searchBill() {
+    this.page = 1
+    this.getAllBill()
+  }
 
+  async getTotalExpense(){
+    try {
+      const result$ = await this.web.getTotalBillExpense()
+      const res = await lastValueFrom(result$);
+      if (res) {
+        this.totalExpense = res['totalAmount']
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
 }

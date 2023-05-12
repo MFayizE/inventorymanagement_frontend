@@ -70,19 +70,38 @@ export class BillsService {
   }
 
   
-  getAllBillList(page,limit,sortBy,sortOrder){
-    if(sortBy){
-      return  this.http.get(`${serverURL}/api/bill?sortBy=${sortBy}&sortOrder=${sortOrder}&page=${page}&limit=${limit}`).pipe(catchError(this.handleError));
+  getAllBillList(page,limit,search,sortBy,sortOrder){
+    const params = {
+      search,
+      page,
+      limit
+    };
+    if(search){
+      return this.http.get(`${serverURL}/api/bill/search?`,{params:params}).pipe(catchError(this.handleError));
+
     }
     else{
-      return  this.http.get(`${serverURL}/api/bill?page=${page}&limit=${limit}`).pipe(catchError(this.handleError));
+      if(sortBy){
+        return  this.http.get(`${serverURL}/api/bill?sortBy=${sortBy}&sortOrder=${sortOrder}&page=${page}&limit=${limit}`).pipe(catchError(this.handleError));
+      }
+      else{
+        return  this.http.get(`${serverURL}/api/bill?page=${page}&limit=${limit}`).pipe(catchError(this.handleError));
+      }
     }
+   
 
   }
 
   getBillByID(id){
     
     return  this.http.get(`${serverURL}/api/bill/${id}`).pipe(catchError(this.handleError));
+
+  }
+
+  
+  getTotalBillExpense(){
+    
+    return  this.http.get(`${serverURL}/api/bill/total`).pipe(catchError(this.handleError));
 
   }
 
