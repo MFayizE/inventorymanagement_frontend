@@ -304,7 +304,7 @@ export class EditInvoiceComponent implements OnInit{
     console.log('control: ', control);
     const item = control.at(i);
     item.patchValue({
-      price: data?.purchasePrice
+      price: data?.salePrice
     });
   }
 }
