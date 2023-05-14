@@ -50,7 +50,7 @@ export class AddInvoiceComponent implements OnInit{
       categoryId: ['', Validators.required],
       customerId: ['', Validators.required],
       invoiceDate: ['', Validators.required],
-      invoiceNumber: ['', Validators.required],
+      invoiceNumber: [0, Validators.required],
 
     });
     this.createCategory = this.fb.group({
@@ -199,7 +199,8 @@ export class AddInvoiceComponent implements OnInit{
         console.log('this.productList: ', this.productList);
 
         // this.loader = false;
-        this.getAllInvoiceCategory()
+        this.lastInvoice()
+        
       },
       error: (err) => {
         console.log(err);
@@ -209,6 +210,24 @@ export class AddInvoiceComponent implements OnInit{
         console.log('Observable completed');
       }
     });
+  }
+
+  async lastInvoice(){
+    try {
+      this.loader = true
+      const result$ = await this.web.getLastInvoice()
+      const res = await lastValueFrom(result$);
+      if (res) {
+        console.log(res);
+        this.createInvoiceForm.controls['invoiceNumber'].patchValue(res['lastInvoiceNumber'] + 1)
+        this.loader = false;
+        this.getAllInvoiceCategory()
+      }
+    } catch (error) {
+      console.log(error);
+      this.toastr.error(error.error.message);
+
+    }
   }
 
   searchProducts(term: string) {
@@ -257,7 +276,7 @@ export class AddInvoiceComponent implements OnInit{
     console.log('control: ', control);
     const item = control.at(i);
     item.patchValue({
-      price: data?.purchasePrice
+      price: data?.salePrice
     });
   }
 

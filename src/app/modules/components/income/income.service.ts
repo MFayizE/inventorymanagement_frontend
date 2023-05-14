@@ -12,7 +12,7 @@ export class IncomeService {
   constructor(private http: HttpClient) { }
 
   getAllProduct(){
-    return  this.http.get(`${serverURL}/api/product/getAll`).pipe(catchError(this.handleError));
+    return  this.http.get(`${serverURL}/api/product/getwithQuantity`).pipe(catchError(this.handleError));
   }
 
   
@@ -66,6 +66,12 @@ export class IncomeService {
 
   addPayment(Id,data){
     return this.http.put(`${serverURL}/api/invoice/${Id}/payment`, data)
+
+  }
+
+  
+  getLastInvoice(){
+    return this.http.get(`${serverURL}/api/invoice/last`)
 
   }
 
