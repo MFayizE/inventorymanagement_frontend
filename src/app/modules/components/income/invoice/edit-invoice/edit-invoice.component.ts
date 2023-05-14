@@ -1,12 +1,10 @@
-import { BillsService } from './../services/bills.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, lastValueFrom, map, Observable, of } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
-import { AddVendorComponent } from '../../vendors/add-vendor/add-vendor.component';
-import { Router } from '@angular/router';
-
+import { ActivatedRoute, Router } from '@angular/router';
+import { IncomeService } from '../../income.service';
 export const MY_DATE_FORMATS = {
   parse: {
     dateInput: 'DD/MM/YYYY',
@@ -19,39 +17,49 @@ export const MY_DATE_FORMATS = {
   },
 };
 @Component({
-  selector: 'app-bill-adding',
-  templateUrl: './bill-adding.component.html',
-  styleUrls: ['./bill-adding.component.scss'],
+  selector: 'app-edit-invoice',
+  templateUrl: './edit-invoice.component.html',
+  styleUrls: ['./edit-invoice.component.scss'],
   providers: [
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }
   ]
 })
-export class BillAddingComponent implements OnInit {
+export class EditInvoiceComponent implements OnInit{
   loader: boolean = false
-  createBillForm: FormGroup;
+  editInvoiceForm: FormGroup;
   subTotal: number
   taxAmount: number
   totalAmount: number
   productList: any = []
-  billCategory: any = []
-  vendorsList: any = []
+  invoiceCategory: any = []
+  customersList: any = []
   addCategory: boolean = false
   createCategory: FormGroup;
   clicked: boolean = false
-  addVendor: boolean = false
-
-  constructor(private fb: FormBuilder, private web: BillsService, private toastr: ToastrService, private router:Router) { }
+  addCustomer: boolean = false
+  invoiceId: any
+  invoiceData: any
+  constructor(private fb: FormBuilder, private web: IncomeService, private toastr: ToastrService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.createBillForm = this.fb.group({
+    this.route.params.subscribe(async params => {
+      console.log('params: ', params);
+      this.invoiceId = params['id'];
+      if (this.invoiceId) {
+        this.getDetails()
+      }
+    });
+
+    this.editInvoiceForm = this.fb.group({
       // items: this.fb.array([]),
       items: this.fb.array([
-        this.initItem(),
       ]),
+
       categoryId: ['', Validators.required],
-      vendorId: ['', Validators.required],
-      billDate: ['', Validators.required],
-      billNumber: ['', Validators.required],
+      customerId: ['', Validators.required],
+      invoiceDate: ['', Validators.required],
+      invoiceNumber: ['', Validators.required],
+      dueDate: ['']
 
     });
     this.createCategory = this.fb.group({
@@ -63,6 +71,50 @@ export class BillAddingComponent implements OnInit {
 
   }
 
+  getDetails() {
+    this.loader = true
+    this.web.getInvoiceByID(this.invoiceId).subscribe({
+      next: (res) => {
+        this.invoiceData = res['invoice'];
+      },
+      error: (err) => {
+        console.log(err);
+        this.loader = false;
+      },
+      complete: () => {
+        console.log('Observable completed');
+        const itemsData = this.editInvoiceForm.get('items') as FormArray;
+        for (const item of this.invoiceData.items) {
+          const formGroup = this.fb.group({
+            product: [item.product._id],
+            quantity: [item.quantity],
+            price: [item.price],
+            taxPercentage: [item.taxPercentage],
+            total: [item.total],
+            taxAmount: [item.taxAmount]
+          });
+          itemsData.push(formGroup);
+        }
+
+        const items = this.editInvoiceForm.get('items') as FormArray;
+  
+        this.subTotal = items.controls.reduce((acc, curr) => acc + curr.get('total').value, 0);
+        this.taxAmount = items.controls.reduce((acc, curr) => acc + ((curr.get('total').value * curr.get('taxPercentage').value) / 100), 0);
+        this.totalAmount = this.subTotal + this.taxAmount;
+
+        this.editInvoiceForm.controls['categoryId'].patchValue(this.invoiceData?.category?._id);
+        this.editInvoiceForm.controls['customerId'].patchValue(this.invoiceData?.customer?._id);
+        this.editInvoiceForm.controls['invoiceDate'].patchValue(this.invoiceData?.invoiceDate);
+
+        this.editInvoiceForm.controls['invoiceNumber'].patchValue(this.invoiceData?.invoiceNumber);
+        if(this.invoiceData?.dueDate){
+          this.editInvoiceForm.controls['dueDate'].patchValue(this.invoiceData?.dueDate);
+        }
+
+        
+      }
+    });
+  }
   initItem() {
     return this.fb.group({
       product: [''],
@@ -74,31 +126,12 @@ export class BillAddingComponent implements OnInit {
     });
   }
 
-  // get items(): FormArray {
-  //   return this.createBillForm.get('items') as FormArray;
-  // }
-
-  // search = (text$: Observable<string>) =>
-  // text$.pipe(
-  //   debounceTime(200),
-  //   distinctUntilChanged(),
-  //   map(term => term.length < 3 ? []
-  //     : this.productList.filter(product => product.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 5))
-  // );
   addItem(): void {
-    const control = <FormArray>this.createBillForm.get('items');
+    const control = <FormArray>this.editInvoiceForm.get('items');
     control.push(this.initItem());
-    // this.items.push(this.fb.group({
-    //   product: [''],
-    //   quantity: [1],
-    //   price: [0.00],
-    //   tax: [0],
-    //   total: [0],
-    //   taxAmount: [0]
-    // }));
   }
   removeItem(index: number): void {
-    const control = <FormArray>this.createBillForm.get('items');
+    const control = <FormArray>this.editInvoiceForm.get('items');
     const item = control.at(index) as FormGroup | null;
     control.removeAt(index);
     console.log('item: ', item);
@@ -118,13 +151,13 @@ export class BillAddingComponent implements OnInit {
     item.controls.tax.setValue(+item.controls.tax.value);
   }
 
-  getAllBillCategory() {
+  getAllInvoiceCategory() {
     this.loader = true
-    this.web.getAllBillCategory().subscribe({
+    this.web.getAllInvoiceCategory().subscribe({
       next: (res) => {
-        this.billCategory = res;
-        console.log(this.billCategory);
-        this.getAllVendors()
+        this.invoiceCategory = res;
+        console.log(this.invoiceCategory);
+        this.getAllCustomers()
         // this.loader = false;
 
       },
@@ -139,12 +172,12 @@ export class BillAddingComponent implements OnInit {
   }
 
 
-  getAllVendors() {
+  getAllCustomers() {
     this.loader = true
-    this.web.getAllVendors().subscribe({
+    this.web.getAllCustomers().subscribe({
       next: (res) => {
-        this.vendorsList = res;
-        console.log(this.vendorsList);
+        this.customersList = res;
+        console.log(this.customersList);
 
         this.loader = false;
       },
@@ -159,8 +192,9 @@ export class BillAddingComponent implements OnInit {
   }
 
   calculateTotal(index: number): void {
-    const items = this.createBillForm.get('items') as FormArray;
+    const items = this.editInvoiceForm.get('items') as FormArray;
     const item = items.at(index) as FormGroup | null;
+    console.log('item: ', item);
     if (!item) {
       return; // exit early if item is null or undefined
     }
@@ -178,19 +212,19 @@ export class BillAddingComponent implements OnInit {
   }
 
 
-  async createBillCategory() {
+  async createInvoiceCategory() {
     let payload = {
       "name": this.createCategory.value.categoryName
     }
     try {
-      const result$ = await this.web.createBillCategory(payload)
+      const result$ = await this.web.createInvoiceCategory(payload)
       const res = await lastValueFrom(result$);
       if (res) {
         console.log(res);
         this.addCategory = false
-        this.getAllBillCategory()
+        this.getAllInvoiceCategory()
         this.createCategory.reset();
-        this.toastr.success("Bill Category successfully created!");
+        this.toastr.success("Invoice Category successfully created!");
 
       }
     } catch (error) {
@@ -200,6 +234,7 @@ export class BillAddingComponent implements OnInit {
     }
   }
 
+
   getAllProduct() {
     this.loader = true
     this.web.getAllProduct().subscribe({
@@ -208,7 +243,7 @@ export class BillAddingComponent implements OnInit {
         console.log('this.productList: ', this.productList);
 
         // this.loader = false;
-        this.getAllBillCategory()
+        this.getAllInvoiceCategory()
       },
       error: (err) => {
         console.log(err);
@@ -224,29 +259,33 @@ export class BillAddingComponent implements OnInit {
     return of(this.productList.filter(product => product.name.toLowerCase().indexOf(term.toLowerCase()) !== -1));
   }
 
-  async createBill() {
+  async editInvoice() {
 
     let payload = {
 
-      "vendorId": this.createBillForm.value.vendorId,
-      "billDate": this.createBillForm.value.billDate,
-      "billNumber": this.createBillForm.value.billNumber,
-      "items": this.createBillForm.value.items,
-      "categoryId": this.createBillForm.value.categoryId
+      "customerId": this.editInvoiceForm.value.customerId,
+      "invoiceDate": this.editInvoiceForm.value.invoiceDate,
+      "invoiceNumber": this.editInvoiceForm.value.invoiceNumber,
+      "items": this.editInvoiceForm.value.items,
+      "categoryId": this.editInvoiceForm.value.categoryId,
+ 
 
     }
+
+    if(this.editInvoiceForm.value.dueDate){
+      payload["dueDate"] = this.editInvoiceForm.value.dueDate
+    }
+
     console.log('payload: ', payload);
 
 
     try {
-      const result$ = await this.web.createBill(payload)
+      const result$ = await this.web.editInvoice(this.invoiceId,payload)
       const res = await lastValueFrom(result$);
       if (res) {
         console.log(res);
-        this.createBillForm.reset();
-        this.router.navigate(['/admin/expenses/bills/view/' + res['bill']?._id]);
-        this.toastr.success("Bill successfully saved!");
-
+        this.router.navigate(['/admin/income/invoices/view/' + res['invoice']?._id]);
+        this.toastr.success("Invoice successfully saved!");
       }
     } catch (error) {
       this.clicked = false
@@ -259,14 +298,14 @@ export class BillAddingComponent implements OnInit {
 
   }
 
-  onChangeProduct(data,i){
+  onChangeProduct(data, i) {
     console.log('data: ', data);
-    const control = <FormArray>this.createBillForm.get('items');
+    const control = <FormArray>this.editInvoiceForm.get('items');
     console.log('control: ', control);
     const item = control.at(i);
     item.patchValue({
       price: data?.purchasePrice
     });
   }
-
 }
+
