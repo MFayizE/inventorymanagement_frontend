@@ -1,0 +1,348 @@
+<section class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" *ngIf="loader">
+    <section>
+        <div class="lds-roller">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+    </section>
+</section>
+
+
+<section *ngIf="!loader">
+    <form [formGroup]="editInvoiceForm" class="w-full">
+        <div class="w-full  px-4 mx-auto mt-16">
+            <h1 class="text-2xl font-semibold mb-4">Edit Invoice</h1>
+
+            <div class="grid md:grid-cols-2 gap-4">
+
+                <!-- <div>
+                    <label class="text-sm font-medium">Category <span class="text-[#FA003F]">*</span></label>
+                    <div class="flex items-center border-2 py-3 pb-4 px-3 rounded-md mb-4 mt-2 bg-white">
+
+                        <span class="material-symbols-outlined h-6 w-6 text-gray-400">
+                            category
+                        </span>
+                        <select class="pl-2 pt-1 outline-none border-none w-full" formControlName="category">
+                            <option class=" outline-none border-none w-full" value="" selected disabled >Choose</option>
+                            <option  [value]="item.name" *ngFor="let item of productCategory">
+                                {{item.name}}
+                            </option>
+                        </select>
+                        <span class="material-symbols-rounded h-6 w-6 cursor-pointer text-[#000103]" (click)="openAddCategory()">
+                            add_circle
+                        </span>
+                        
+                    </div>
+                </div> -->
+
+
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                    <label class="text-sm font-medium">Customers <span class="text-[#FA003F]">*</span></label>
+                    <div class="flex justify-between items-center border-2 py-3 pb-4 px-3 rounded-md mb-4 mt-2 bg-white">
+                        <span class="material-symbols-outlined h-6 w-6 text-gray-400">
+                            group
+                        </span>
+                        <ng-select class="w-5/6" [items]="customersList" bindLabel="name" bindValue="_id"
+                            [formControlName]="'customerId'"
+                            [virtualScroll]="true">
+                        </ng-select>
+                        <span class="material-symbols-rounded h-6 w-6 cursor-pointer text-[#000103]"
+                            (click)="addCustomer = true">
+                            add_circle
+                        </span>
+
+                    </div>
+                </div>
+                <div>
+                    <label class="text-sm font-medium">Category <span class="text-[#FA003F]">*</span></label>
+                    <div class="flex items-center border-2 py-3 pb-4 px-3 rounded-md mb-4 mt-2 bg-white">
+
+                        <span class="material-symbols-outlined h-6 w-6 text-gray-400">
+                            category
+                        </span>
+    
+                        <ng-select class="w-5/6" [items]="invoiceCategory" bindLabel="name" bindValue="_id"
+                            [formControlName]="'categoryId'"
+                            [virtualScroll]="true">
+                        </ng-select>
+                        <span class="material-symbols-rounded h-6 w-6 cursor-pointer text-[#000103]"
+                            (click)="addCategory = true">
+                            add_circle
+                        </span>
+
+                    </div>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                    <label class="text-sm font-medium">Invoice Date<span class="text-[#FA003F]">*</span></label>
+                    <div class="mb-4">
+                        <div class=" mt-2">
+
+                            <mat-form-field appearance="fill">
+                                <mat-label>Choose a date</mat-label>
+                                <input matInput [matDatepicker]="invoiceDate" formControlName="invoiceDate">
+                                <mat-hint>DD/MM/YYYY</mat-hint>
+                                <mat-datepicker-toggle matIconSuffix [for]="invoiceDate"></mat-datepicker-toggle>
+                                <mat-datepicker #invoiceDate></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label class="text-sm font-medium">Invoice Number <span class="text-[#FA003F]">*</span></label>
+                    <div class="mb-4">
+                        <div class="flex items-center border-2 py-3 pb-4 px-3 rounded-md  mt-2 bg-white">
+                            <span class="material-symbols-outlined h-6 w-6 text-gray-400">
+                                description
+                            </span>
+                            <input class="pl-2 pt-1 outline-none border-none w-full" formControlName="invoiceNumber"
+                                type="text" name="" id="" placeholder="Enter Invoice number" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-4" *ngIf="invoiceData?.dueDate">
+                <div>
+                    <label class="text-sm font-medium">Due Date<span class="text-[#FA003F]">*</span></label>
+                    <div class="mb-4">
+                        <div class=" mt-2">
+
+                            <mat-form-field appearance="fill">
+                                <mat-label>Choose a date</mat-label>
+                                <input matInput [matDatepicker]="dueDate" formControlName="dueDate">
+                                <mat-hint>DD/MM/YYYY</mat-hint>
+                                <mat-datepicker-toggle matIconSuffix [for]="dueDate"></mat-datepicker-toggle>
+                                <mat-datepicker #dueDate></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+
+            <div class="relative min-w-0 mb-6 bg-white">
+                <div class="overflow-x-auto grid grid-cols-1">
+                    <table class="table-auto">
+                        <thead class="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
+                            <tr>
+                                <th class="p-5 whitespace-nowrap">
+                                    <div class="font-semibold text-left">Actions</div>
+                                </th>
+                                <th class="p-5 whitespace-nowrap">
+                                    <div class="font-semibold text-left">Name</div>
+                                </th>
+                                <th class="p-5 whitespace-nowrap">
+                                    <div class="font-semibold text-left">Quantity</div>
+                                </th>
+                                <th class="p-5 whitespace-nowrap">
+
+                                    <div class="font-semibold text-left">Price</div>
+
+                                </th>
+                                <th class="p-5 whitespace-nowrap">
+
+                                    <div class="font-semibold text-left">Tax</div>
+
+                                </th>
+                                <th class="p-5 whitespace-nowrap">
+
+                                    <div class="font-semibold text-left">Total</div>
+
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm divide-y divide-gray-100">
+
+                            <tr class="" *ngFor="let item of editInvoiceForm.get('items')['controls']; let i=index">
+                                <th class="p-5 whitespace-nowrap">
+
+                                    <div class="font-semibold  text-left "><span
+                                            class="material-symbols-rounded text-[#FA003F] cursor-pointer"
+                                            (click)="removeItem(i);" >
+                                            disabled_by_default
+                                        </span></div>
+                                </th>
+                                <td class="p-5  w-2/5">
+
+                                    <div class="productSelect">
+                                        <ng-select [items]="productList" bindLabel="name" bindValue="_id"
+                                            (change)="onChangeProduct($event,i)" [formControl]="item.controls.product"
+                                            [virtualScroll]="true">
+                                        </ng-select>
+                                    </div>
+
+
+
+                                </td>
+
+                                <td class="p-5 whitespace-nowrap w-1/6">
+                                    <input class=" border-2 border-gray-400 rounded-md p-3 w-max"
+                                        (change)="calculateTotal(i)" [formControl]="item.controls.quantity"
+                                        type="number" />
+                                </td>
+                                <td class="p-5 whitespace-nowrap w-1/6">
+                                    <div class="text-left"><input type="number"
+                                            class=" border-2 border-gray-400 rounded-md p-3 w-max"
+                                            (change)="calculateTotal(i)" [formControl]="item.controls.price"></div>
+
+
+                                </td>
+                                <td class="p-5 whitespace-nowrap w-1/6">
+
+
+                                    <div>
+                                        <select class="border-2 border-gray-400 rounded-md p-3 "
+                                            (change)="calculateTotal(i)" [formControl]="item.controls.taxPercentage"
+                                            aria-placeholder="Tax">
+                                            <option [value]="0">
+                                                0
+                                            </option>
+                                            <option [value]="5">
+                                                5%
+                                            </option>
+                                        </select>
+                                    </div>
+
+
+                                </td>
+                                <td class="p-5 whitespace-nowrap w-1/5">
+                                    {{item.value.total}}
+
+                                </td>
+
+
+
+
+                            </tr>
+                            <tr>
+                                <th class="p-5 whitespace-nowrap">
+
+                                    <div class="font-semibold text-green-400  text-left"><span
+                                            class="material-symbols-rounded cursor-pointer" (click)="addItem()">
+                                            add_box
+                                        </span></div>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th colspan="5" class="p-5 whitespace-nowrap text-right">
+                                    Subtotal
+                                </th>
+                                <th class="p-5 whitespace-nowrap">
+                                    {{subTotal}}
+                                </th>
+                            </tr>
+                            <tr>
+                                <th colspan="5" class="p-5 whitespace-nowrap text-right">
+                                    Tax
+                                </th>
+                                <th class="p-5 whitespace-nowrap">
+                                    {{taxAmount}}
+                                </th>
+                            </tr>
+                            <tr>
+                                <th colspan="5" class="p-5 whitespace-nowrap text-right">
+                                    Total
+                                </th>
+                                <th class="p-5 whitespace-nowrap">
+                                    {{totalAmount}}
+                                </th>
+                            </tr>
+
+                        </tbody>
+                        <!-- <button (click)="onSubmit()">Submit</button> -->
+                    </table>
+                </div>
+            </div>
+            <div class="flex justify-end mb-5">
+                <button class="bg-[#000103] px-8 py-3 rounded-md text-sm text-[#FFFEFE] disabled:opacity-25"
+                    [disabled]="editInvoiceForm.invalid || clicked" (click)="editInvoice();clicked = true">Save
+                    Invoice</button>
+            </div>
+        </div>
+
+    </form>
+
+</section>
+
+
+<section *ngIf="addCategory">
+    <form [formGroup]="createCategory" class="w-full">
+        <div class="main-modal fixed w-full h-100 inset-0 z-50 overflow-hidden flex justify-center items-center animated fadeIn faster"
+            style="background: rgba(0,0,0,.7);">
+            <div
+                class="border border-teal-500 modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+                <div class="modal-content py-4 text-left px-6">
+                    <!--Title-->
+                    <div class="flex justify-between items-center pb-3">
+                        <p class="text-2xl font-semibold ">Add Invoice Category</p>
+                        <div class="modal-close cursor-pointer z-50" (click)="addCategory = false">
+                            <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18"
+                                height="18" viewBox="0 0 18 18">
+                                <path
+                                    d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <!--Body-->
+                    <div>
+                        <label class="text-sm font-medium">Category name <span class="text-[#FA003F]">*</span></label>
+                        <div class="flex items-center border-2 py-3 pb-4 px-3 rounded-md mb-4 mt-2 bg-white">
+                            <span class="material-symbols-outlined h-6 w-6 text-gray-400">
+                                category
+                            </span>
+                            <input class="pl-2 pt-1 outline-none border-none w-full" formControlName="categoryName"
+                                type="text" name="" id="" placeholder="Enter category name" />
+                        </div>
+                    </div>
+                    <!--Footer-->
+                    <div class="flex justify-end pt-2">
+                        <button
+                            class="focus:outline-none modal-close px-4 bg-gray-400 p-3 rounded-lg text-black hover:bg-gray-300"
+                            (click)="addCategory = false">Cancel</button>
+                        <button
+                            class="focus:outline-none px-4 bg-teal-500 p-3 ml-3 rounded-lg text-white hover:bg-teal-400"
+                            (click)="createInvoiceCategory()">Create</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+
+
+<section *ngIf="addCustomer">
+    <form [formGroup]="createCategory" class="w-full">
+        <div class="main-modal fixed w-full h-100 inset-0 z-50 overflow-y-auto flex justify-center items-center animated fadeIn faster"
+            style="background: rgba(0,0,0,.7);">
+            <div class="border border-teal-500 modal-container bg-white w-9/12 mx-auto rounded shadow-lg z-50 ">
+                <div class="modal-content py-4 text-left px-6">
+                    <!--Title-->
+                    <div class="flex justify-end items-center pb-3">
+                        <div class="modal-close cursor-pointer z-50" (click)="addCustomer = false; getAllCustomers()">
+                            <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18"
+                                height="18" viewBox="0 0 18 18">
+                                <path
+                                    d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <!--Body-->
+                    <app-add-customer [isPopUp]="true"></app-add-customer>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>

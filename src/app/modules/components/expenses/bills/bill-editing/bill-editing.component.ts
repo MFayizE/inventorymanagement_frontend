@@ -128,17 +128,6 @@ export class BillEditingComponent implements OnInit {
     });
   }
 
-  // get items(): FormArray {
-  //   return this.createBillForm.get('items') as FormArray;
-  // }
-
-  // search = (text$: Observable<string>) =>
-  // text$.pipe(
-  //   debounceTime(200),
-  //   distinctUntilChanged(),
-  //   map(term => term.length < 3 ? []
-  //     : this.productList.filter(product => product.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 5))
-  // );
   addItem(): void {
     const control = <FormArray>this.createBillForm.get('items');
     control.push(this.initItem());
@@ -247,9 +236,6 @@ export class BillEditingComponent implements OnInit {
     }
   }
 
-  onSubmit() {
-    console.log(this.createBillForm.value);
-  }
 
   getAllProduct() {
     this.loader = true
