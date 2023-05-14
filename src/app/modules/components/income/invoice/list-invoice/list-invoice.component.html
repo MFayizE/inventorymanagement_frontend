@@ -1,0 +1,219 @@
+<section class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" *ngIf="loader">
+    <section>
+        <div class="lds-roller">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+    </section>
+</section>
+
+<section *ngIf="!loader" class="container mx-auto px-4 sm:px-8 mt-16">
+    <div class="w-full flex justify-between">
+        <div class="flex ">
+            <h1 class="text-2xl font-semibold">Invoices</h1>
+        </div>
+        <div class="flex ">
+            <button class="bg-[#000103] px-5 py-2 rounded-md text-sm text-[#FFFEFE]"
+                [routerLink]="'/admin/income/invoices/add'">Create Invoice</button>
+        </div>
+    </div>
+
+    <div class="w-full flex justify-between ">
+
+
+        <div class="pt-2 relative  text-gray-600">
+            <input class="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
+                type="search" name="search" placeholder="Search" [(ngModel)]="search" (change)="searchInvoice()">
+            <button type="submit" class="absolute right-0 top-0 mt-5 mr-4">
+                <svg class="text-gray-600 h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
+                    viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
+                    width="512px" height="512px">
+                    <path
+                        d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+                </svg>
+            </button>
+        </div>
+
+
+    </div>
+
+
+    
+    <div class="py-8">
+        <div class="grid grid-cols-1 ">
+            <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+                <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
+                    <table class="min-w-full leading-normal overflow-x-auto">
+                        <thead>
+                            <tr>
+                                <th
+                                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    
+                                    <div class="flex items-center gap-3  cursor-pointer" (click)="sortData('invoiceNumber')">
+                                        <div>
+                                            Number 
+                                        </div>
+                                        <div [ngClass]="{'text-indigo-600': sortBy == 'invoiceNumber'}">
+                                            <span class="material-symbols-outlined"  *ngIf="sortOrder == 'asc'" >arrow_upward</span>
+                                            <span class="material-symbols-outlined " *ngIf="sortOrder == 'desc'">arrow_downward</span>
+                                        </div>
+                                  
+                                    </div>
+                                </th>
+                                <th
+                                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Customer
+                                </th>
+                                <th
+                                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <div class="flex items-center gap-3  cursor-pointer" (click)="sortData('totalAmount')">
+                                        <div>
+                                            Amount 
+                                        </div>
+                                        <div [ngClass]="{'text-indigo-600': sortBy == 'totalAmount'}">
+                                            <span class="material-symbols-outlined"  *ngIf="sortOrder == 'asc'" >arrow_upward</span>
+                                            <span class="material-symbols-outlined " *ngIf="sortOrder == 'desc'">arrow_downward</span>
+                                        </div>
+                                  
+                                    </div>
+                                </th>
+                                <th
+                                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    
+                                    <div class="flex items-center gap-3  cursor-pointer" (click)="sortData('invoiceDate')">
+                                        <div>
+                                            Invoice Date 
+                                        </div>
+                                        <div [ngClass]="{'text-indigo-600': sortBy == 'invoiceDate'}">
+                                            <span class="material-symbols-outlined"  *ngIf="sortOrder == 'asc'" >arrow_upward</span>
+                                            <span class="material-symbols-outlined " *ngIf="sortOrder == 'desc'">arrow_downward</span>
+                                        </div>
+                                  
+                                    </div>
+                                </th>
+                                <th
+                                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                   
+                                    <div class="flex items-center gap-3  cursor-pointer" (click)="sortData('dueDate')">
+                                        <div>
+                                            Due Date 
+                                        </div>
+                                        <div [ngClass]="{'text-indigo-600': sortBy == 'dueDate'}">
+                                            <span class="material-symbols-outlined"  *ngIf="sortOrder == 'asc'" >arrow_upward</span>
+                                            <span class="material-symbols-outlined " *ngIf="sortOrder == 'desc'">arrow_downward</span>
+                                        </div>
+                                  
+                                    </div>
+                                </th>
+                                <th
+                                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <div class="flex items-center gap-3  cursor-pointer" (click)="sortData('status')">
+                                        <div>
+                                            Status
+                                        </div>
+                                        <div [ngClass]="{'text-indigo-600': sortBy == 'status'}">
+                                            <span class="material-symbols-outlined"  *ngIf="sortOrder == 'asc'" >arrow_upward</span>
+                                            <span class="material-symbols-outlined " *ngIf="sortOrder == 'desc'">arrow_downward</span>
+                                        </div>
+                                  
+                                    </div>
+                                </th>
+                                <th
+                                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of invoiceList | paginate: { itemsPerPage: limit, currentPage: page, totalItems: totalInvoice }">
+                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm font-bold cursor-pointer"
+                                [routerLink]="'/admin/income/invoices/view/'+data?._id">
+                                    <p class="text-gray-900 whitespace-no-wrap">{{data?.invoiceNumber}}</p>
+                                </td>
+                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                    <p class="text-gray-900 whitespace-no-wrap">{{data?.customer?.name}}</p>
+                                </td>
+                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                    <p class="text-gray-900 whitespace-no-wrap">{{data?.totalAmount}} AED</p>
+                                </td>
+                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm" >
+                                    <p class="text-gray-900 whitespace-no-wrap">{{data?.invoiceDate | date:'dd MMMM yyyy'}}</p>
+                                </td>
+                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                    <p class="text-gray-900 whitespace-no-wrap">{{data?.dueDate  | date:'dd MMMM yyyy'}}</p>
+                                </td>
+                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                    <span *ngIf="data?.status == 'Draft'"
+                                        class="relative inline-block px-3 py-1 font-semibold text-yellow-500 leading-tight">
+                                        <span aria-hidden
+                                            class="absolute inset-0 bg-yellow-200 opacity-50 rounded-full"></span>
+                                        <span class="relative">Draft</span>
+                                    </span>
+                                    <span *ngIf="data?.status == 'Received'"
+                                        class="relative inline-block px-3 py-1 font-semibold text-blue-400 leading-tight">
+                                        <span aria-hidden
+                                            class="absolute inset-0 bg-blue-200 opacity-50 rounded-full"></span>
+                                        <span class="relative">Received</span>
+                                    </span>
+                                    <span *ngIf="data?.status == 'Partial'"
+                                        class="relative inline-block px-3 py-1 font-semibold text-green-400 leading-tight">
+                                        <span aria-hidden
+                                            class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                                        <span class="relative">Partial</span>
+                                    </span>
+                                    <span *ngIf="data?.status == 'Paid'"
+                                        class="relative inline-block px-3 py-1 font-semibold text-green-800 leading-tight">
+                                        <span aria-hidden
+                                            class="absolute inset-0 bg-green-400 opacity-50 rounded-full"></span>
+                                        <span class="relative">Paid</span>
+                                    </span>
+                                </td>
+                                
+                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                    <div>
+                                        <button mat-icon-button [matMenuTriggerFor]="more">
+                                            <span class="material-symbols-outlined cursor-pointer">
+                                                more_vert
+                                            </span>
+                                        </button>
+                                        <mat-menu #more="matMenu" xPosition="before">
+                                            <!-- <button mat-menu-item [routerLink]="">
+                                                <span>Delete Activity</span>
+                                            </button> -->
+                                            <button mat-menu-item [routerLink]="'/admin/income/invoices/edit/' + data?._id">
+
+                                                <span>Edit Invoice</span>
+
+                                            </button>
+                                        </mat-menu>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="flex justify-between px-5 py-5 bg-white border-t align-middle items-center">
+                        <div
+                        class="flex flex-col xs:flex-row items-center xs:justify-between          ">
+                        <span class="text-xs xs:text-sm text-gray-900">
+                            {{pageLimitMessage}}  || Total Income : {{totalIncome}} AED
+                                </span>
+                    </div>
+                        <div>
+                            <pagination-controls (pageChange)="getPage($event)"></pagination-controls>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+           
+        </div>
+
+    </div>
+</section>

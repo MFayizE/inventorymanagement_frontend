@@ -17,7 +17,7 @@ export class SidebarComponent implements OnInit {
   },
     {
       name: "Incomes", link: "#", icon: "payments", margin: true, hasSubmenu: true, submenus: [
-        { name: "Invoices", link: "/", icon: "receipt_long" },
+        { name: "Invoices", link: "/admin/income/invoices", icon: "receipt_long" },
         { name: "Customers", link: "/submenu2", icon: "group" },
       ]
     },
