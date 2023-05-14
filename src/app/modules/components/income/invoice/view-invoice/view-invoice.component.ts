@@ -140,7 +140,7 @@ export class ViewInvoiceComponent {
       if (res) {
         console.log(res);
         this.addDueDate = false
-        this.invoiceData()
+        this.getInvoiceUsingId()
         this.createDueDate.reset();
         this.toastr.success("Invoice Due Date successfully Added!");
 
