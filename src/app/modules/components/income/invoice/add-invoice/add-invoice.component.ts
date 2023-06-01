@@ -47,6 +47,10 @@ export class AddInvoiceComponent implements OnInit{
       items: this.fb.array([
         this.initItem(),
       ]),
+      extra: this.fb.array([
+        // this.initItem(),
+      ]),
+      
       categoryId: ['', Validators.required],
       customerId: ['', Validators.required],
       invoiceDate: ['', Validators.required],
@@ -72,6 +76,16 @@ export class AddInvoiceComponent implements OnInit{
       taxAmount: [0]
     });
   }
+  initExtra() {
+    return this.fb.group({
+      name: [''],
+      quantity: [1],
+      price: [0.00],
+      taxPercentage: [0],
+      total: [0],
+      taxAmount: [0]
+    });
+  }
 
   addItem(): void {
     const control = <FormArray>this.createInvoiceForm.get('items');
@@ -85,8 +99,15 @@ export class AddInvoiceComponent implements OnInit{
     //   taxAmount: [0]
     // }));
   }
-  removeItem(index: number): void {
-    const control = <FormArray>this.createInvoiceForm.get('items');
+  addExtra(): void {
+    const control = <FormArray>this.createInvoiceForm.get('extra');
+    control.push(this.initExtra());
+
+  }
+  removeItem(index: number,type): void {
+    const allProducts = this.createInvoiceForm.get('items') as FormArray;
+    const allExtra = this.createInvoiceForm.get('extra') as FormArray;
+    const control = <FormArray>this.createInvoiceForm.get(type);
     const item = control.at(index) as FormGroup | null;
     control.removeAt(index);
     console.log('item: ', item);
@@ -98,8 +119,12 @@ export class AddInvoiceComponent implements OnInit{
     const taxPercentage = item.get('taxPercentage').value;
     const total = quantity * price;
     item.get('total').patchValue(total);
-    this.subTotal = control.controls.reduce((acc, curr) => acc + curr.get('total').value, 0);
-    this.taxAmount = control.controls.reduce((acc, curr) => acc + ((curr.get('total').value * curr.get('taxPercentage').value) / 100), 0);
+    const subProductTotal = allProducts.controls.reduce((acc, curr) => acc + curr.get('total').value, 0);
+    const taxProductAmount = allProducts.controls.reduce((acc, curr) => acc + ((curr.get('total').value * curr.get('taxPercentage').value) / 100), 0);
+    const subExtraTotal = allExtra.controls.reduce((acc, curr) => acc + curr.get('total').value, 0);
+    const taxExtraAmount = allExtra.controls.reduce((acc, curr) => acc + ((curr.get('total').value * curr.get('taxPercentage').value) / 100), 0);
+    this.subTotal = subProductTotal + subExtraTotal
+    this.taxAmount = taxProductAmount + taxExtraAmount
     this.totalAmount = this.subTotal + this.taxAmount;
     const taxAmount = (total * taxPercentage) / 100;
     item.controls.taxAmount.setValue(Number(taxAmount.toFixed(2)))
@@ -149,8 +174,10 @@ export class AddInvoiceComponent implements OnInit{
     });
   }
 
-  calculateTotal(index: number): void {
-    const items = this.createInvoiceForm.get('items') as FormArray;
+  calculateTotal(index: number,type): void {
+    const allProducts = this.createInvoiceForm.get('items') as FormArray;
+    const allExtra = this.createInvoiceForm.get('extra') as FormArray;
+    const items = this.createInvoiceForm.get(type) as FormArray;
     const item = items.at(index) as FormGroup | null;
     if (!item) {
       return; // exit early if item is null or undefined
@@ -160,8 +187,12 @@ export class AddInvoiceComponent implements OnInit{
     const taxPercentage = item.get('taxPercentage').value;
     const total = quantity * price;
     item.get('total').patchValue(total);
-    this.subTotal = items.controls.reduce((acc, curr) => acc + curr.get('total').value, 0);
-    this.taxAmount = items.controls.reduce((acc, curr) => acc + ((curr.get('total').value * curr.get('taxPercentage').value) / 100), 0);
+    const subProductTotal = allProducts.controls.reduce((acc, curr) => acc + curr.get('total').value, 0);
+    const taxProductAmount = allProducts.controls.reduce((acc, curr) => acc + ((curr.get('total').value * curr.get('taxPercentage').value) / 100), 0);
+    const subExtraTotal = allExtra.controls.reduce((acc, curr) => acc + curr.get('total').value, 0);
+    const taxExtraAmount = allExtra.controls.reduce((acc, curr) => acc + ((curr.get('total').value * curr.get('taxPercentage').value) / 100), 0);
+    this.subTotal = subProductTotal + subExtraTotal
+    this.taxAmount = taxProductAmount + taxExtraAmount
     this.totalAmount = this.subTotal + this.taxAmount;
     const taxAmount = (total * taxPercentage) / 100;
     item.controls.taxAmount.setValue(Number(taxAmount.toFixed(2)))
@@ -243,7 +274,8 @@ export class AddInvoiceComponent implements OnInit{
       "invoiceDate": this.createInvoiceForm.value.invoiceDate,
       "invoiceNumber": this.createInvoiceForm.value.invoiceNumber,
       "items": this.createInvoiceForm.value.items,
-      "categoryId": this.createInvoiceForm.value.categoryId
+      "categoryId": this.createInvoiceForm.value.categoryId, 
+      "extra": this.createInvoiceForm.value.extra,
 
     }
     console.log('payload: ', payload);
@@ -278,6 +310,7 @@ export class AddInvoiceComponent implements OnInit{
     item.patchValue({
       price: data?.salePrice
     });
+    this.calculateTotal(i,'items')
   }
 
 }

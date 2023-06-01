@@ -190,6 +190,31 @@
                                 </div>
                             </div>
                         </section>
+                        <section class="items" *ngFor="let items of invoiceData?.extra">
+                            <div class="flex flex-wrap -mx-1 py-2 border-b">
+                                <div class="flex-1 px-1">
+                                    <p class="text-gray-800" x-text="invoice.name">{{items?.name}}</p>
+                                </div>
+
+                                <div class="px-1 w-32 text-right">
+                                    <p class="text-gray-800" x-text="invoice.qty">{{items?.quantity}}</p>
+                                </div>
+
+                                <div class="px-1 w-32 text-right">
+                                    <p class="text-gray-800" x-text="numberFormat(invoice.rate)">{{items?.price}} AED
+                                    </p>
+                                </div>
+                                <div class="px-1 w-32 text-right">
+                                    <p class="text-gray-800" x-text="numberFormat(invoice.tax)">
+                                        {{items?.taxPercentage}}%</p>
+                                </div>
+
+                                <div class="px-1 w-32 text-right">
+                                    <p class="text-gray-800" x-text="numberFormat(invoice.total)">{{items?.total}} AED
+                                    </p>
+                                </div>
+                            </div>
+                        </section>
 
 
                         <div class="py-2 ml-auto mt-20" style="width: 320px">
