@@ -169,7 +169,7 @@
 
                                     <div class="font-semibold  text-left "><span
                                             class="material-symbols-rounded text-[#FA003F] cursor-pointer"
-                                            (click)="removeItem(i);" >
+                                            (click)="removeItem(i,'items')">
                                             disabled_by_default
                                         </span></div>
                                 </th>
@@ -188,13 +188,13 @@
 
                                 <td class="p-5 whitespace-nowrap w-1/6">
                                     <input class=" border-2 border-gray-400 rounded-md p-3 w-max"
-                                        (change)="calculateTotal(i)" [formControl]="item.controls.quantity"
+                                        (change)="calculateTotal(i,'items')" [formControl]="item.controls.quantity"
                                         type="number" />
                                 </td>
                                 <td class="p-5 whitespace-nowrap w-1/6">
                                     <div class="text-left"><input type="number"
                                             class=" border-2 border-gray-400 rounded-md p-3 w-max"
-                                            (change)="calculateTotal(i)" [formControl]="item.controls.price"></div>
+                                            (change)="calculateTotal(i,'items')" [formControl]="item.controls.price"></div>
 
 
                                 </td>
@@ -203,7 +203,7 @@
 
                                     <div>
                                         <select class="border-2 border-gray-400 rounded-md p-3 "
-                                            (change)="calculateTotal(i)" [formControl]="item.controls.taxPercentage"
+                                            (change)="calculateTotal(i,'items')" [formControl]="item.controls.taxPercentage"
                                             aria-placeholder="Tax">
                                             <option [value]="0">
                                                 0
@@ -230,6 +230,103 @@
 
                                     <div class="font-semibold text-green-400  text-left"><span
                                             class="material-symbols-rounded cursor-pointer" (click)="addItem()">
+                                            add_box
+                                        </span></div>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th class="p-5 whitespace-nowrap">
+                                    
+                                </th>
+                                <th class="p-5 whitespace-nowrap">
+
+                                </th>
+                                <th class="p-5 whitespace-nowrap">
+                                    <div class="flex justify-center">
+                                        <div>
+                                            EXTRA
+                                        </div>
+    
+                                    </div>
+                                </th>
+                                <th class="p-5 whitespace-nowrap">
+                                    
+                                </th>
+                                <th class="p-5 whitespace-nowrap">
+
+                                </th>
+                                <th class="p-5 whitespace-nowrap">
+
+                                </th>
+                                <th class="p-5 whitespace-nowrap">
+
+                                </th>
+                                
+                            </tr>
+                            <tr class="" *ngFor="let item of editInvoiceForm.get('extra')['controls']; let i=index">
+                                <th class="p-5 whitespace-nowrap">
+
+                                    <div class="font-semibold  text-left "><span
+                                            class="material-symbols-rounded text-[#FA003F] cursor-pointer"
+                                            (click)="removeItem(i,'extra')">
+                                            disabled_by_default
+                                        </span></div>
+                                </th>
+                                <td class="p-5  w-2/5">
+
+                                    <div class="extraSelect">
+                                        
+                                        <input type="text" class="px-2" [formControl]="item.controls.name">
+                                    </div>
+
+
+
+                                </td>
+
+                                <td class="p-5 whitespace-nowrap w-1/6">
+                                    <input class=" border-2 border-gray-400 rounded-md p-3 w-max"
+                                        (change)="calculateTotal(i,'extra')" [formControl]="item.controls.quantity"
+                                        type="number" />
+                                </td>
+                                <td class="p-5 whitespace-nowrap w-1/6">
+                                    <div class="text-left"><input type="number"
+                                            class=" border-2 border-gray-400 rounded-md p-3 w-max"
+                                            (change)="calculateTotal(i,'extra')" [formControl]="item.controls.price"></div>
+
+
+                                </td>
+                                <td class="p-5 whitespace-nowrap w-1/6">
+
+
+                                    <div>
+                                        <select class="border-2 border-gray-400 rounded-md p-3 "
+                                            (change)="calculateTotal(i,'extra')" [formControl]="item.controls.taxPercentage"
+                                            aria-placeholder="Tax">
+                                            <option [value]="0">
+                                                0
+                                            </option>
+                                            <option [value]="5">
+                                                5%
+                                            </option>
+                                        </select>
+                                    </div>
+
+
+                                </td>
+                                <td class="p-5 whitespace-nowrap w-1/5">
+                                    {{item.value.total}}
+
+                                </td>
+
+
+
+
+                            </tr>
+                            <tr>
+                                <th class="p-5 whitespace-nowrap">
+
+                                    <div class="font-semibold text-green-400  text-left"><span
+                                            class="material-symbols-rounded cursor-pointer" (click)="addExtra()">
                                             add_box
                                         </span></div>
                                 </th>

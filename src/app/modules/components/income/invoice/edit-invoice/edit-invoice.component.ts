@@ -24,7 +24,7 @@ export const MY_DATE_FORMATS = {
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }
   ]
 })
-export class EditInvoiceComponent implements OnInit{
+export class EditInvoiceComponent implements OnInit {
   loader: boolean = false
   editInvoiceForm: FormGroup;
   subTotal: number
@@ -54,7 +54,9 @@ export class EditInvoiceComponent implements OnInit{
       // items: this.fb.array([]),
       items: this.fb.array([
       ]),
-
+      extra: this.fb.array([
+        // this.initItem(),
+      ]),
       categoryId: ['', Validators.required],
       customerId: ['', Validators.required],
       invoiceDate: ['', Validators.required],
@@ -95,11 +97,27 @@ export class EditInvoiceComponent implements OnInit{
           });
           itemsData.push(formGroup);
         }
+        const extraData = this.editInvoiceForm.get('extra') as FormArray;
+        for (const item of this.invoiceData.extra) {
+          const formGroup = this.fb.group({
+            name: [item.name],
+            quantity: [item.quantity],
+            price: [item.price],
+            taxPercentage: [item.taxPercentage],
+            total: [item.total],
+            taxAmount: [item.taxAmount]
+          });
+          extraData.push(formGroup);
+        }
+        const allProducts = this.editInvoiceForm.get('items') as FormArray;
+        const allExtra = this.editInvoiceForm.get('extra') as FormArray;
 
-        const items = this.editInvoiceForm.get('items') as FormArray;
-  
-        this.subTotal = items.controls.reduce((acc, curr) => acc + curr.get('total').value, 0);
-        this.taxAmount = items.controls.reduce((acc, curr) => acc + ((curr.get('total').value * curr.get('taxPercentage').value) / 100), 0);
+        const subProductTotal = allProducts.controls.reduce((acc, curr) => acc + curr.get('total').value, 0);
+        const taxProductAmount = allProducts.controls.reduce((acc, curr) => acc + ((curr.get('total').value * curr.get('taxPercentage').value) / 100), 0);
+        const subExtraTotal = allExtra.controls.reduce((acc, curr) => acc + curr.get('total').value, 0);
+        const taxExtraAmount = allExtra.controls.reduce((acc, curr) => acc + ((curr.get('total').value * curr.get('taxPercentage').value) / 100), 0);
+        this.subTotal = subProductTotal + subExtraTotal
+        this.taxAmount = taxProductAmount + taxExtraAmount
         this.totalAmount = this.subTotal + this.taxAmount;
 
         this.editInvoiceForm.controls['categoryId'].patchValue(this.invoiceData?.category?._id);
@@ -107,11 +125,11 @@ export class EditInvoiceComponent implements OnInit{
         this.editInvoiceForm.controls['invoiceDate'].patchValue(this.invoiceData?.invoiceDate);
 
         this.editInvoiceForm.controls['invoiceNumber'].patchValue(this.invoiceData?.invoiceNumber);
-        if(this.invoiceData?.dueDate){
+        if (this.invoiceData?.dueDate) {
           this.editInvoiceForm.controls['dueDate'].patchValue(this.invoiceData?.dueDate);
         }
 
-        
+
       }
     });
   }
@@ -125,13 +143,30 @@ export class EditInvoiceComponent implements OnInit{
       taxAmount: [0]
     });
   }
+  initExtra() {
+    return this.fb.group({
+      name: [''],
+      quantity: [1],
+      price: [0.00],
+      taxPercentage: [0],
+      total: [0],
+      taxAmount: [0]
+    });
+  }
 
   addItem(): void {
     const control = <FormArray>this.editInvoiceForm.get('items');
     control.push(this.initItem());
   }
-  removeItem(index: number): void {
-    const control = <FormArray>this.editInvoiceForm.get('items');
+  addExtra(): void {
+    const control = <FormArray>this.editInvoiceForm.get('extra');
+    control.push(this.initExtra());
+
+  }
+  removeItem(index: number,type): void {
+    const allProducts = this.editInvoiceForm.get('items') as FormArray;
+    const allExtra = this.editInvoiceForm.get('extra') as FormArray;
+    const control = <FormArray>this.editInvoiceForm.get(type);
     const item = control.at(index) as FormGroup | null;
     control.removeAt(index);
     console.log('item: ', item);
@@ -143,8 +178,12 @@ export class EditInvoiceComponent implements OnInit{
     const taxPercentage = item.get('taxPercentage').value;
     const total = quantity * price;
     item.get('total').patchValue(total);
-    this.subTotal = control.controls.reduce((acc, curr) => acc + curr.get('total').value, 0);
-    this.taxAmount = control.controls.reduce((acc, curr) => acc + ((curr.get('total').value * curr.get('taxPercentage').value) / 100), 0);
+    const subProductTotal = allProducts.controls.reduce((acc, curr) => acc + curr.get('total').value, 0);
+    const taxProductAmount = allProducts.controls.reduce((acc, curr) => acc + ((curr.get('total').value * curr.get('taxPercentage').value) / 100), 0);
+    const subExtraTotal = allExtra.controls.reduce((acc, curr) => acc + curr.get('total').value, 0);
+    const taxExtraAmount = allExtra.controls.reduce((acc, curr) => acc + ((curr.get('total').value * curr.get('taxPercentage').value) / 100), 0);
+    this.subTotal = subProductTotal + subExtraTotal
+    this.taxAmount = taxProductAmount + taxExtraAmount
     this.totalAmount = this.subTotal + this.taxAmount;
     const taxAmount = (total * taxPercentage) / 100;
     item.controls.taxAmount.setValue(Number(taxAmount.toFixed(2)))
@@ -191,10 +230,11 @@ export class EditInvoiceComponent implements OnInit{
     });
   }
 
-  calculateTotal(index: number): void {
-    const items = this.editInvoiceForm.get('items') as FormArray;
+  calculateTotal(index: number,type): void {
+    const allProducts = this.editInvoiceForm.get('items') as FormArray;
+    const allExtra = this.editInvoiceForm.get('extra') as FormArray;
+    const items = this.editInvoiceForm.get(type) as FormArray;
     const item = items.at(index) as FormGroup | null;
-    console.log('item: ', item);
     if (!item) {
       return; // exit early if item is null or undefined
     }
@@ -203,8 +243,12 @@ export class EditInvoiceComponent implements OnInit{
     const taxPercentage = item.get('taxPercentage').value;
     const total = quantity * price;
     item.get('total').patchValue(total);
-    this.subTotal = items.controls.reduce((acc, curr) => acc + curr.get('total').value, 0);
-    this.taxAmount = items.controls.reduce((acc, curr) => acc + ((curr.get('total').value * curr.get('taxPercentage').value) / 100), 0);
+    const subProductTotal = allProducts.controls.reduce((acc, curr) => acc + curr.get('total').value, 0);
+    const taxProductAmount = allProducts.controls.reduce((acc, curr) => acc + ((curr.get('total').value * curr.get('taxPercentage').value) / 100), 0);
+    const subExtraTotal = allExtra.controls.reduce((acc, curr) => acc + curr.get('total').value, 0);
+    const taxExtraAmount = allExtra.controls.reduce((acc, curr) => acc + ((curr.get('total').value * curr.get('taxPercentage').value) / 100), 0);
+    this.subTotal = subProductTotal + subExtraTotal
+    this.taxAmount = taxProductAmount + taxExtraAmount
     this.totalAmount = this.subTotal + this.taxAmount;
     const taxAmount = (total * taxPercentage) / 100;
     item.controls.taxAmount.setValue(Number(taxAmount.toFixed(2)))
@@ -267,12 +311,13 @@ export class EditInvoiceComponent implements OnInit{
       "invoiceDate": this.editInvoiceForm.value.invoiceDate,
       "invoiceNumber": this.editInvoiceForm.value.invoiceNumber,
       "items": this.editInvoiceForm.value.items,
+      "extra":this.editInvoiceForm.value.extra,
       "categoryId": this.editInvoiceForm.value.categoryId,
- 
+
 
     }
 
-    if(this.editInvoiceForm.value.dueDate){
+    if (this.editInvoiceForm.value.dueDate) {
       payload["dueDate"] = this.editInvoiceForm.value.dueDate
     }
 
@@ -280,7 +325,7 @@ export class EditInvoiceComponent implements OnInit{
 
 
     try {
-      const result$ = await this.web.editInvoice(this.invoiceId,payload)
+      const result$ = await this.web.editInvoice(this.invoiceId, payload)
       const res = await lastValueFrom(result$);
       if (res) {
         console.log(res);
