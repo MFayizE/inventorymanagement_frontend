@@ -144,10 +144,10 @@
                                     <p class="text-gray-900 whitespace-no-wrap">{{data?.totalAmount}} AED</p>
                                 </td>
                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm" >
-                                    <p class="text-gray-900 whitespace-no-wrap">{{data?.billDate | date:'dd MMMM yyyy'}}</p>
+                                    <p class="text-gray-900 whitespace-no-wrap">{{data?.billDate | date:'dd MMMM yyyy' : 'UTC'}}</p>
                                 </td>
                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <p class="text-gray-900 whitespace-no-wrap">{{data?.dueDate  | date:'dd MMMM yyyy'}}</p>
+                                    <p class="text-gray-900 whitespace-no-wrap">{{data?.dueDate  | date:'dd MMMM yyyy' : 'UTC'}}</p>
                                 </td>
                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                     <span *ngIf="data?.status == 'Draft'"
