@@ -122,7 +122,7 @@
                                         class="w-32 text-gray-800 block font-bold text-xs uppercase tracking-wide">Invoice
                                         Date</label>
                                     <span class="mr-4 inline-block">:</span>
-                                    <div x-text="invoiceDate">{{ billData?.billDate | date:'dd MMMM yyyy' : 'UTC' }}</div>
+                                    <div x-text="invoiceDate">{{ billData?.billDate | date:'dd MMMM yyyy'   }}</div>
                                 </div>
 
                                 <div class="mb-1 flex items-center">
@@ -130,7 +130,7 @@
                                         class="w-32 text-gray-800 block font-bold text-xs uppercase tracking-wide">Due
                                         date</label>
                                     <span class="mr-4 inline-block">:</span>
-                                    <div x-text="invoiceDueDate">{{ billData?.dueDate | date:'dd MMMM yyyy' : 'UTC' }}</div>
+                                    <div x-text="invoiceDueDate">{{ billData?.dueDate | date:'dd MMMM yyyy'   }}</div>
                                 </div>
                             </div>
                         </div>
