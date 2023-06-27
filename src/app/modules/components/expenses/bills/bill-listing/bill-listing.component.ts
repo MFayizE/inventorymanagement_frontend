@@ -20,6 +20,7 @@ export class BillListingComponent implements OnInit {
   sortOrder: string = 'asc'
   sortBy: string
   totalExpense:number
+  
   constructor(private web: BillsService) { }
 
   ngOnInit(): void {
