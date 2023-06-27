@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { AddVendorComponent } from '../../vendors/add-vendor/add-vendor.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -41,6 +42,7 @@ export class BillEditingComponent implements OnInit {
   addVendor: boolean = false
   billId: any
   billData: any
+  datepipe: DatePipe = new DatePipe('en-US');
   constructor(private fb: FormBuilder, private web: BillsService, private toastr: ToastrService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -266,7 +268,7 @@ export class BillEditingComponent implements OnInit {
     let payload = {
 
       "vendorId": this.createBillForm.value.vendorId,
-      "billDate": this.createBillForm.value.billDate,
+      "billDate": this.datepipe.transform(this.createBillForm.value.billDate, 'yyyy-MM-dd'),
       "billNumber": this.createBillForm.value.billNumber,
       "items": this.createBillForm.value.items,
       "categoryId": this.createBillForm.value.categoryId,
