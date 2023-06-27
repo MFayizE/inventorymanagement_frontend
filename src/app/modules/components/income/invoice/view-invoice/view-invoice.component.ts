@@ -8,6 +8,7 @@ import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { lastValueFrom } from 'rxjs';
 import { DialogConfirmService } from 'src/app/shared/components/services/dialog-confirm.service';
 import { IncomeService } from '../../income.service';
+import { DatePipe } from '@angular/common';
 export const MY_DATE_FORMATS = {
   parse: {
     dateInput: 'DD/MM/YYYY',
@@ -40,6 +41,7 @@ export class ViewInvoiceComponent {
   addPaymentForm: FormGroup;
   accountList: any = []
   addAccount: boolean = false
+  datepipe: DatePipe = new DatePipe('en-US');
   constructor(private route: ActivatedRoute,
     private web: IncomeService,
     private fb: FormBuilder,
@@ -132,7 +134,7 @@ export class ViewInvoiceComponent {
 
   async addInvoiceDueDate() {
     let payload = {
-      "dueDate": this.createDueDate.value.dueDate
+      "dueDate": this.datepipe.transform(this.createDueDate.value.dueDate, 'yyyy-MM-dd'),
     }
     try {
       const result$ = await this.web.addInvoiceDueDate(payload, this.invoiceId)
@@ -199,7 +201,7 @@ export class ViewInvoiceComponent {
       "payment": {
         "amount": this.addPaymentForm.value.amount,
         "method": this.addPaymentForm.value.method,
-        "date": this.addPaymentForm.value.date,
+        "date": this.datepipe.transform(this.addPaymentForm.value.date, 'yyyy-MM-dd'),
       },
       "account": this.addPaymentForm.value.account,
 

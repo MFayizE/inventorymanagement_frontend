@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IncomeService } from '../../income.service';
+import { DatePipe } from '@angular/common';
 export const MY_DATE_FORMATS = {
   parse: {
     dateInput: 'DD/MM/YYYY',
@@ -39,6 +40,7 @@ export class EditInvoiceComponent implements OnInit {
   addCustomer: boolean = false
   invoiceId: any
   invoiceData: any
+  datepipe: DatePipe = new DatePipe('en-US');
   constructor(private fb: FormBuilder, private web: IncomeService, private toastr: ToastrService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -308,7 +310,7 @@ export class EditInvoiceComponent implements OnInit {
     let payload = {
 
       "customerId": this.editInvoiceForm.value.customerId,
-      "invoiceDate": this.editInvoiceForm.value.invoiceDate,
+      "invoiceDate":this.datepipe.transform(this.editInvoiceForm.value.invoiceDate, 'yyyy-MM-dd'),
       "invoiceNumber": this.editInvoiceForm.value.invoiceNumber,
       "items": this.editInvoiceForm.value.items,
       "extra":this.editInvoiceForm.value.extra,
@@ -318,7 +320,7 @@ export class EditInvoiceComponent implements OnInit {
     }
 
     if (this.editInvoiceForm.value.dueDate) {
-      payload["dueDate"] = this.editInvoiceForm.value.dueDate
+      payload["dueDate"] = this.datepipe.transform(this.editInvoiceForm.value.dueDate, 'yyyy-MM-dd')
     }
 
     console.log('payload: ', payload);

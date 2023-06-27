@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { IncomeService } from '../../income.service';
-
+import { DatePipe } from '@angular/common';
 export const MY_DATE_FORMATS = {
   parse: {
     dateInput: 'DD/MM/YYYY',
@@ -38,7 +38,7 @@ export class AddInvoiceComponent implements OnInit{
   createCategory: FormGroup;
   clicked: boolean = false
   addCustomer: boolean = false
-
+  datepipe: DatePipe = new DatePipe('en-US');
   constructor(private fb: FormBuilder, private web: IncomeService, private toastr: ToastrService, private router:Router) { }
 
   ngOnInit(): void {
@@ -103,6 +103,11 @@ export class AddInvoiceComponent implements OnInit{
     const control = <FormArray>this.createInvoiceForm.get('extra');
     control.push(this.initExtra());
 
+  }
+
+  test(){
+    console.log(this.createInvoiceForm);
+    
   }
   removeItem(index: number,type): void {
     const allProducts = this.createInvoiceForm.get('items') as FormArray;
@@ -271,7 +276,7 @@ export class AddInvoiceComponent implements OnInit{
     let payload = {
 
       "customerId": this.createInvoiceForm.value.customerId,
-      "invoiceDate": this.createInvoiceForm.value.invoiceDate,
+      "invoiceDate": this.datepipe.transform(this.createInvoiceForm.value.invoiceDate, 'yyyy-MM-dd'),
       "invoiceNumber": this.createInvoiceForm.value.invoiceNumber,
       "items": this.createInvoiceForm.value.items,
       "categoryId": this.createInvoiceForm.value.categoryId, 
