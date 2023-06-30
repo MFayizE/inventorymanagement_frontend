@@ -48,13 +48,13 @@
             <div class="grid md:grid-cols-2 gap-4">
                 <div>
                     <label class="text-sm font-medium">Vendor <span class="text-[#FA003F]">*</span></label>
-                    <div class="flex justify-between items-center border-2 py-3 pb-4 px-3 rounded-md mb-4 mt-2 bg-white">
+                    <div
+                        class="flex justify-between items-center border-2 py-3 pb-4 px-3 rounded-md mb-4 mt-2 bg-white">
                         <span class="material-symbols-outlined h-6 w-6 text-gray-400">
                             group
                         </span>
                         <ng-select class="w-5/6" [items]="vendorsList" bindLabel="name" bindValue="_id"
-                            [formControlName]="'vendorId'"
-                            [virtualScroll]="true">
+                            [formControlName]="'vendorId'" [virtualScroll]="true">
                         </ng-select>
                         <span class="material-symbols-rounded h-6 w-6 cursor-pointer text-[#000103]"
                             (click)="addVendor = true">
@@ -70,10 +70,9 @@
                         <span class="material-symbols-outlined h-6 w-6 text-gray-400">
                             category
                         </span>
-    
+
                         <ng-select class="w-5/6" [items]="billCategory" bindLabel="name" bindValue="_id"
-                            [formControlName]="'categoryId'"
-                            [virtualScroll]="true">
+                            [formControlName]="'categoryId'" [virtualScroll]="true">
                         </ng-select>
                         <span class="material-symbols-rounded h-6 w-6 cursor-pointer text-[#000103]"
                             (click)="addCategory = true">
@@ -199,7 +198,7 @@
 
                                 </td>
                                 <td class="p-5 whitespace-nowrap w-1/5">
-                                    {{item.value.total}}
+                                    {{ (item.value.total || 0).toFixed(2) }}
 
                                 </td>
 
@@ -221,7 +220,7 @@
                                     Subtotal
                                 </th>
                                 <th class="p-5 whitespace-nowrap">
-                                    {{subTotal}}
+                                    {{ (subTotal || 0).toFixed(2) }}
                                 </th>
                             </tr>
                             <tr>
@@ -229,7 +228,7 @@
                                     Tax
                                 </th>
                                 <th class="p-5 whitespace-nowrap">
-                                    {{taxAmount}}
+                                    {{ (taxAmount || 0).toFixed(2) }}
                                 </th>
                             </tr>
                             <tr>
@@ -237,7 +236,7 @@
                                     Total
                                 </th>
                                 <th class="p-5 whitespace-nowrap">
-                                    {{totalAmount}}
+                                    {{ (totalAmount || 0).toFixed(2) }}
                                 </th>
                             </tr>
 

@@ -217,7 +217,7 @@
 
                                 </td>
                                 <td class="p-5 whitespace-nowrap w-1/5">
-                                    {{item.value.total}}
+                                    {{ (item.value.total|| 0).toFixed(2) }}
 
                                 </td>
 
@@ -314,7 +314,7 @@
 
                                 </td>
                                 <td class="p-5 whitespace-nowrap w-1/5">
-                                    {{item.value.total}}
+                                 {{ (item.value.total|| 0).toFixed(2) }}
 
                                 </td>
 
@@ -336,7 +336,7 @@
                                     Subtotal
                                 </th>
                                 <th class="p-5 whitespace-nowrap">
-                                    {{subTotal}}
+                                    {{ (subTotal|| 0).toFixed(2) }}
                                 </th>
                             </tr>
                             <tr>
@@ -344,7 +344,7 @@
                                     Tax
                                 </th>
                                 <th class="p-5 whitespace-nowrap">
-                                    {{taxAmount}}
+                                    {{ (taxAmount|| 0).toFixed(2) }}
                                 </th>
                             </tr>
                             <tr>
@@ -352,7 +352,7 @@
                                     Total
                                 </th>
                                 <th class="p-5 whitespace-nowrap">
-                                    {{totalAmount}}
+                                    {{ (totalAmount|| 0).toFixed(2) }}
                                 </th>
                             </tr>
 

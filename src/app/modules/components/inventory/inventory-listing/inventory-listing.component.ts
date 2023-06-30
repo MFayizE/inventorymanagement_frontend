@@ -106,4 +106,10 @@ export class InventoryListingComponent implements OnInit {
     this.page = 1
     this.getAllProduct()
   }
+
+  getPage(newPage){
+    this.page = newPage
+    this.getAllProduct()
+
+  }
 }
