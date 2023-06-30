@@ -175,7 +175,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let data of productList">
+                            <tr *ngFor="let data of productList | paginate: { itemsPerPage: limit, currentPage: page, totalItems: totalProduct }">
                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm font-bold">
                                     <p class="text-gray-900 whitespace-no-wrap">{{data?.name}}</p>
                                 </td>
@@ -245,20 +245,15 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div
-                        class="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
-                        <span class="text-xs xs:text-sm text-gray-900">
-                            Showing {{page}} to {{maxPage}} of {{totalProduct}} Entries
-                        </span>
-                        <div class="inline-flex mt-2 xs:mt-0">
-                            <button [disabled]="page <= 1" (click)="pagination('prev')"
-                                class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l disabled:opacity-30">
-                                Prev
-                            </button>
-                            <button (click)="pagination('next')" [disabled]="isLastPage"
-                                class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r disabled:opacity-30">
-                                Next
-                            </button>
+                    <div class="flex justify-between px-5 py-5 bg-white border-t align-middle items-center">
+                        <div
+                        class="flex flex-col xs:flex-row items-center xs:justify-between          ">
+                        <!-- <span class="text-xs xs:text-sm text-gray-900">
+                            {{pageLimitMessage}}  || Total Expense : {{totalExpense}} AED
+                                </span> -->
+                    </div>
+                        <div>
+                            <pagination-controls (pageChange)="getPage($event)"></pagination-controls>
                         </div>
                     </div>
                 </div>
