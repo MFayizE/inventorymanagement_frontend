@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-
-  mainAPI: 'https://inventorymangement-backend.onrender.com'
+  mainAPI: 'http://localhost:5000',
+  // mainAPI: 'https://inventorymangement-backend.onrender.com'
 
 };
