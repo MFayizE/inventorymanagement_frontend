@@ -13,6 +13,7 @@ export class InventoryListingComponent implements OnInit {
   loader:boolean = false
   page: number = 1
   limit: number = 25
+  isInvalidPage:boolean = false
   isLastPage: boolean = false
   maxPage: number
   productList: any =[]
@@ -112,4 +113,18 @@ export class InventoryListingComponent implements OnInit {
     this.getAllProduct()
 
   }
+
+  
+  onEnterPressed(data) {
+    let currentPage = data.target.value
+    console.log('this.maxPage: ', this.maxPage);
+
+    this.isInvalidPage = currentPage > this.maxPage;
+    if(!this.isInvalidPage){
+      this.page = currentPage
+      this.getAllProduct()
+    }
+    
+  }
+
 }
