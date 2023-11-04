@@ -19,6 +19,7 @@ export class BillListingComponent implements OnInit {
   pageLimitMessage: string
   sortOrder: string = 'asc'
   sortBy: string
+  isInvalidPage:boolean = false
   totalExpense:number
   
   constructor(private web: BillsService) { }
@@ -69,6 +70,18 @@ export class BillListingComponent implements OnInit {
     this.page = newPage
     this.getAllBill()
 
+  }
+
+  onEnterPressed(data) {
+    let currentPage = data.target.value
+    console.log('this.maxPage: ', this.maxPage);
+
+    this.isInvalidPage = currentPage > this.maxPage;
+    if(!this.isInvalidPage){
+      this.page = currentPage
+      this.getAllBill()
+    }
+    
   }
   sortData(sort){
     this.page = 1

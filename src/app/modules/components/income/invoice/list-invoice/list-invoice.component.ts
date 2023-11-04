@@ -18,6 +18,7 @@ export class ListInvoiceComponent implements OnInit{
   pageLimitMessage: string
   sortOrder: string = 'asc'
   sortBy: string
+  isInvalidPage:boolean = false
   totalIncome:number
   constructor(private web: IncomeService) { }
 
@@ -106,5 +107,17 @@ export class ListInvoiceComponent implements OnInit{
     } catch (error) {
       console.log(error);
     }
+  }
+
+  onEnterPressed(data) {
+    let currentPage = data.target.value
+    console.log('this.maxPage: ', this.maxPage);
+
+    this.isInvalidPage = currentPage > this.maxPage;
+    if(!this.isInvalidPage){
+      this.page = currentPage
+      this.getAllInvoice()
+    }
+    
   }
 }
