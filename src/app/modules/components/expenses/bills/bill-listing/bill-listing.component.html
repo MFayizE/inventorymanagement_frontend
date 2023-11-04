@@ -205,9 +205,17 @@
                             {{pageLimitMessage}}  || Total Expense : {{totalExpense}} AED
                                 </span>
                     </div>
+                    <div class="flex gap-4 items-center align-middle ">
+                        <div class="flex items-center border-2 py-1  px-2 rounded-md  bg-white">
+                            <input type="number" class="pl-2 pt-1 outline-none border-none w-16" 
+                            (keyup.enter)="onEnterPressed($event)"  [value]="page">
+                            <div *ngIf="isInvalidPage" class="text-danger">Page value exceeds maxPage</div>
+                        </div>
+
                         <div>
                             <pagination-controls (pageChange)="getPage($event)"></pagination-controls>
                         </div>
+                    </div>
                     </div>
                     
                 </div>
